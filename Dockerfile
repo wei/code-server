@@ -38,8 +38,7 @@ RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment && \
 
 USER coder
 # We create first instead of just using WORKDIR as when WORKDIR creates, the user is root.
-RUN mkdir -p /home/coder/project \
-    && mkdir -p /home/coder/.local/share/code-server
+RUN mkdir -p /home/coder/project
 
 WORKDIR /home/coder/project
 
@@ -51,3 +50,9 @@ COPY --from=0 /src/packages/server/cli-linux-x64 /usr/local/bin/code-server
 EXPOSE 8443
 
 ENTRYPOINT ["dumb-init", "code-server"]
+
+ARG VCS_REF
+ARG BUILD_DATE
+LABEL \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.build-date=$BUILD_DATE
