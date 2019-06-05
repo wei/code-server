@@ -17,27 +17,27 @@ COPY . .
 RUN yarn && NODE_ENV=production yarn task build:server:binary
 
 
-FROM bitnami/minideb:latest
+FROM ubuntu:rolling
 
-RUN apt-get update && apt-get install -y \
-	openssl \
-	net-tools \
-	git \
-	locales \
-	sudo \
-	dumb-init \
-	vim \
-	curl \
+RUN apt-get update && apt-get install -y -qq \
+    openssl \
+    net-tools \
+    inetutils-tools \
+    git \
+    locales \
+    sudo \
+    dumb-init \
+    curl \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-RUN locale-gen en_US.UTF-8
-# We unfortunately cannot use update-locale because docker will not use the env variables
-# configured in /etc/default/locale so we need to set it manually.
-ENV LC_ALL=en_US.UTF-8
-
-RUN adduser --gecos '' --disabled-password coder && \
-	echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
+RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    echo "LANG=en_US.UTF-8" > /etc/locale.conf && \
+    locale-gen en_US.UTF-8 && \
+    \
+    adduser --gecos '' --disabled-password coder && \
+	  echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
 
 USER coder
 # We create first instead of just using WORKDIR as when WORKDIR creates, the user is root.
