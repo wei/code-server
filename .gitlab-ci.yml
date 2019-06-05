@@ -1,0 +1,36 @@
+stages:
+  - test
+  - deploy
+
+test:
+  image: node:lts
+  stage: test
+  before_script:
+    - yarn i
+  script:
+    - yarn test
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - node_modules/
+
+deploy_registry:
+  image: docker:latest
+  stage: deploy
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG || true
+  script:
+    - docker build --pull
+        --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+        --build-arg VCS_REF=$CI_COMMIT_SHORT_SHA 
+        --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+        -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  only:
+    - master
+    - latest
