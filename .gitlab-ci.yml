@@ -1,18 +1,5 @@
 stages:
-#  - test
   - deploy
-
-test:
-  image: node:lts
-  stage: test
-  before_script:
-    - yarn
-  script:
-    - yarn test
-  cache:
-    key: $CI_COMMIT_REF_SLUG
-    paths:
-      - node_modules/
 
 deploy_registry:
   image: docker:latest
