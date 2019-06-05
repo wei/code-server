@@ -1,0 +1,8 @@
+version: "1"
+rules:
+  - base: master
+    upstream: cdr:master
+    mergeMethod: hardreset
+  - base: latest
+    upstream: master
+    mergeMethod: merge
