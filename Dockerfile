@@ -17,24 +17,27 @@ RUN yarn && NODE_ENV=production yarn task build:server:binary
 FROM ubuntu:rolling
 
 RUN apt-get update && apt-get install -y -qq \
-    openssl \
-    net-tools \
-    inetutils-tools \
     git \
-    locales \
     sudo \
-    dumb-init \
     curl \
     wget \
+    nano \
+    screen \
+    locales \
+    openssl \
+    net-tools \
+    pastebinit \
+    inetutils-tools \
+    dumb-init \
     && rm -rf /var/lib/apt/lists/*
 
-RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment && \
-    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
-    echo "LANG=en_US.UTF-8" > /etc/locale.conf && \
-    locale-gen en_US.UTF-8 && \
+RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment \
+    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && echo "LANG=en_US.UTF-8" > /etc/locale.conf \
+    && locale-gen en_US.UTF-8 \
     \
-    adduser --gecos '' --disabled-password coder && \
-	  echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
+    && adduser --gecos '' --disabled-password coder \
+	&& echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
 
 USER coder
 # We create first instead of just using WORKDIR as when WORKDIR creates, the user is root.
