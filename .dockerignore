@@ -4,6 +4,7 @@ doc/
 # GitHub stuff
 .github
 .gitignore
+.gitlab-ci.yml
 .travis.yml
 LICENSE
 README.md
