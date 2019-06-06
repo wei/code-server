@@ -38,7 +38,8 @@ RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment && \
 
 USER coder
 # We create first instead of just using WORKDIR as when WORKDIR creates, the user is root.
-RUN mkdir -p /home/coder/project
+RUN mkdir -p /home/coder/project && \
+    mkdir -p /home/coder/.local/share/code-server
 
 WORKDIR /home/coder/project
 
