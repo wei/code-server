@@ -42,8 +42,9 @@ RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment \
 
 USER coder
 # We create first instead of just using WORKDIR as when WORKDIR creates, the user is root.
-RUN mkdir -p /home/coder/project && \
-    mkdir -p /home/coder/.local/share/code-server
+RUN mkdir -p /home/coder/project \
+    && mkdir -p /home/coder/.local/share/code-server \
+    && echo "PS1='🐳  \[\033[1;36m\]\u@\h\[\033[0m\] \[\033[1;34m\][\w]\[\033[00m\]\$ '" >> /home/coder/.bashrc
 
 WORKDIR /home/coder/project
 
@@ -53,8 +54,6 @@ VOLUME [ "/home/coder/project" ]
 
 COPY --from=0 /src/packages/server/cli-linux-x64 /usr/local/bin/code-server
 EXPOSE 8443
-
-ENV PS1 '🐳  \[\033[1;36m\]\u@\h\[\033[0m\] \[\033[1;34m\][\w]\[\033[00m\]\$ '
 
 ENTRYPOINT ["dumb-init", "code-server"]
 
