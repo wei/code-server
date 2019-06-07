@@ -36,6 +36,7 @@ RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment \
     && echo "LANG=en_US.UTF-8" > /etc/locale.conf \
     && locale-gen en_US.UTF-8 \
     \
+    && addgroup --gid 1001 coder \
     && adduser --gecos '' --disabled-password --uid 1001 --gid 1001 coder \
 	&& echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
 
