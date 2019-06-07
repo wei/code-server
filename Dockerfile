@@ -53,6 +53,8 @@ VOLUME [ "/home/coder/project" ]
 COPY --from=0 /src/packages/server/cli-linux-x64 /usr/local/bin/code-server
 EXPOSE 8443
 
+ENV PS1 '🐳  \[\033[1;36m\]\u@\h\[\033[0m\] \[\033[1;34m\][\w]\[\033[00m\]\$ '
+
 ENTRYPOINT ["dumb-init", "code-server"]
 
 ARG VCS_REF
