@@ -17,15 +17,17 @@ jobs:
         docker pull docker.pkg.github.com/${{ github.repository }}/code-server:latest
     - name: Build Docker Image
       run: >
-        docker build -t docker.pkg.github.com/${{ github.repository }}/code-server:latest . \
+        docker build --pull \
           --cache-from docker.pkg.github.com/${{ github.repository }}/code-server:latest \
           --build-arg vscodeVersion=${{ secrets.VSCODE_VERSION }} \
           --build-arg VCS_REF=${{ github.sha }} \
-          --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+          -t code-server .
     - name: Push Docker Image
       run: >
+        docker tag code-server docker.pkg.github.com/${{ github.repository }}/code-server:latest && \
         docker push docker.pkg.github.com/${{ github.repository }}/code-server:latest
     - name: Push Docker Image with Version
       run: >
-        docker tag docker.pkg.github.com/${{ github.repository }}/code-server:latest docker.pkg.github.com/${{ github.repository }}/code-server:${{ secrets.VSCODE_VERSION }} && \
+        docker tag code-server docker.pkg.github.com/${{ github.repository }}/code-server:${{ secrets.VSCODE_VERSION }} && \
         docker push docker.pkg.github.com/${{ github.repository }}/code-server:${{ secrets.VSCODE_VERSION }}
