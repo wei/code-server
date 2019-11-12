@@ -12,18 +12,27 @@ jobs:
     - name: Login to Docker Registry
       run: >
         docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
-    - name: Pull Latest
+    - name: Build Docker Image - builder
       run: >
-        docker pull docker.pkg.github.com/${{ github.repository }}/code-server:latest
+        docker build --pull \
+          --cache-from docker.pkg.github.com/${{ github.repository }}/code-server:builder \
+          --target builder \
+          --build-arg vscodeVersion=${{ secrets.VSCODE_VERSION }} \
+          --build-arg VCS_REF=${{ github.sha }} \
+          --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+          -t docker.pkg.github.com/${{ github.repository }}/code-server:builder .
     - name: Build Docker Image
       run: >
         docker build --pull \
+          --cache-from docker.pkg.github.com/${{ github.repository }}/code-server:builder \
           --cache-from docker.pkg.github.com/${{ github.repository }}/code-server:latest \
           --build-arg vscodeVersion=${{ secrets.VSCODE_VERSION }} \
           --build-arg VCS_REF=${{ github.sha }} \
           --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-          -t code-server .
+          -t docker.pkg.github.com/${{ github.repository }}/code-server:latest .
+    - name: Push Docker Image - builder
+      run: >
+        docker push docker.pkg.github.com/${{ github.repository }}/code-server:builder
     - name: Push Docker Image
       run: >
-        docker tag code-server docker.pkg.github.com/${{ github.repository }}/code-server:latest && \
         docker push docker.pkg.github.com/${{ github.repository }}/code-server:latest
