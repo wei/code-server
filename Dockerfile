@@ -22,12 +22,6 @@ RUN yarn \
 
 FROM ubuntu:rolling
 
-RUN locale-gen en_US.UTF-8
-# We cannot use update-locale because docker will not use the env variables
-# configured in /etc/default/locale so we need to set it manually.
-ENV LC_ALL=en_US.UTF-8 \
-	SHELL=/bin/bash
-
 RUN apt-get update && apt-get install -y -qq \
     git \
     sudo \
