@@ -22,7 +22,7 @@ RUN yarn \
 
 FROM ubuntu:rolling
 
-RUN apt-get update && apt-get install -y -qq \
+RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
     git \
     sudo \
     curl \
