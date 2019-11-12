@@ -27,7 +27,3 @@ jobs:
       run: >
         docker tag code-server docker.pkg.github.com/${{ github.repository }}/code-server:latest && \
         docker push docker.pkg.github.com/${{ github.repository }}/code-server:latest
-    - name: Push Docker Image with Version
-      run: >
-        docker tag code-server docker.pkg.github.com/${{ github.repository }}/code-server:${{ secrets.VSCODE_VERSION }} && \
-        docker push docker.pkg.github.com/${{ github.repository }}/code-server:${{ secrets.VSCODE_VERSION }}
