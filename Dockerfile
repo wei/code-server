@@ -1,4 +1,4 @@
-FROM node:10.16.0
+FROM node:10.16.0 AS builder
 ARG codeServerVersion=docker
 ARG vscodeVersion
 ARG githubToken
@@ -59,7 +59,7 @@ WORKDIR /home/coder/project
 # mount. So that they do not lose their data if they delete the container.
 VOLUME [ "/home/coder/project" ]
 
-COPY --from=0 /src/binaries/code-server /usr/local/bin/code-server
+COPY --from=builder /src/binaries/code-server /usr/local/bin/code-server
 EXPOSE 8080
 
 ENTRYPOINT ["dumb-init", "code-server", "--host", "0.0.0.0", "--disable-telemetry"]
