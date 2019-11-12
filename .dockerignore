@@ -5,6 +5,7 @@ doc
 .github
 .gitignore
 .node-version
+.gitlab-ci.yml
 .travis.yml
 LICENSE
 README.md
