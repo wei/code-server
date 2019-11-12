@@ -8,7 +8,7 @@ jobs:
     name: Build and Push
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@latest
+    - uses: actions/checkout@master
     - name: Login to Docker Registry
       run: >
         docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
