@@ -23,4 +23,4 @@ jobs:
       run: >
         docker push docker.pkg.github.com/${{ github.repository }}/code-server:latest && \
         docker tag docker.pkg.github.com/${{ github.repository }}/code-server:latest docker.pkg.github.com/${{ github.repository }}/code-server:${{ secrets.VSCODE_VERSION }} && \
-        docker push docker.pkg.github.com/${{ github.repository }}/code-server:${{ secrets.VSCODE_VERSION }} && \
+        docker push docker.pkg.github.com/${{ github.repository }}/code-server:${{ secrets.VSCODE_VERSION }}
