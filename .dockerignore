@@ -2,6 +2,7 @@ Dockerfile
 build
 deployment
 doc
+.git
 .github
 .gitignore
 .node-version
