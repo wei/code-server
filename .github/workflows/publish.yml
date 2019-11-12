@@ -22,7 +22,7 @@ jobs:
           --target builder \
           --build-arg vscodeVersion=${{ secrets.VSCODE_VERSION }} \
           -t docker.pkg.github.com/${{ github.repository }}/code-server:builder .
-    - name: Pull Docker Image - builder
+    - name: Pull Docker Image
       run: >
         docker pull docker.pkg.github.com/${{ github.repository }}/code-server:latest || true
     - name: Build Docker Image
