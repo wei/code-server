@@ -1,427 +1,145 @@
-diff --git a/src/vs/base/browser/browser.ts b/src/vs/base/browser/browser.ts
-index 16414ef..3006e05 100644
---- a/src/vs/base/browser/browser.ts
-+++ b/src/vs/base/browser/browser.ts
-@@ -125,0 +126,4 @@ export const isEdgeWebView = isEdge && (userAgent.indexOf('WebView/') >= 0);
-+export const isMacintosh = userAgent.indexOf("Macintosh") >= 0;
-+export const isWindows = userAgent.indexOf("Windows") >= 0;
-+export const isLinux = userAgent.indexOf("Linux") >= 0;
-+
-diff --git a/src/vs/base/browser/keyboardEvent.ts b/src/vs/base/browser/keyboardEvent.ts
-index 03bdffc..d72c168 100644
---- a/src/vs/base/browser/keyboardEvent.ts
-+++ b/src/vs/base/browser/keyboardEvent.ts
-@@ -154 +154 @@ let INVERSE_KEY_CODE_MAP: KeyCode[] = new Array(KeyCode.MAX_VALUE);
--		if (platform.isMacintosh) {
-+		if (browser.isMacintosh) {
-@@ -159 +159 @@ let INVERSE_KEY_CODE_MAP: KeyCode[] = new Array(KeyCode.MAX_VALUE);
--		if (platform.isMacintosh) {
-+		if (browser.isMacintosh) {
-@@ -205 +205 @@ export interface IKeyboardEvent {
--const ctrlKeyMod = (platform.isMacintosh ? KeyMod.WinCtrl : KeyMod.CtrlCmd);
-+const ctrlKeyMod = (browser.isMacintosh ? KeyMod.WinCtrl : KeyMod.CtrlCmd);
-@@ -208 +208 @@ const shiftKeyMod = KeyMod.Shift;
--const metaKeyMod = (platform.isMacintosh ? KeyMod.CtrlCmd : KeyMod.WinCtrl);
-+const metaKeyMod = (browser.isMacintosh ? KeyMod.CtrlCmd : KeyMod.WinCtrl);
-diff --git a/src/vs/base/browser/ui/aria/aria.ts b/src/vs/base/browser/ui/aria/aria.ts
-index fc71827..c8ed796 100644
---- a/src/vs/base/browser/ui/aria/aria.ts
-+++ b/src/vs/base/browser/ui/aria/aria.ts
-@@ -8 +8 @@ import * as nls from 'vs/nls';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/base/browser/ui/list/listWidget.ts b/src/vs/base/browser/ui/list/listWidget.ts
-index 0869c52..4bd0813 100644
---- a/src/vs/base/browser/ui/list/listWidget.ts
-+++ b/src/vs/base/browser/ui/list/listWidget.ts
-@@ -13 +13 @@ import * as DOM from 'vs/base/browser/dom';
--import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -256 +256 @@ class KeyboardController<T> implements IDisposable {
--			onKeyDown.filter(e => (platform.isMacintosh ? e.metaKey : e.ctrlKey) && e.keyCode === KeyCode.KEY_A).on(this.onCtrlA, this, this.disposables);
-+			onKeyDown.filter(e => (browser.isMacintosh ? e.metaKey : e.ctrlKey) && e.keyCode === KeyCode.KEY_A).on(this.onCtrlA, this, this.disposables);
-@@ -494 +494 @@ export function isSelectionSingleChangeEvent(event: IListMouseEvent<any> | IList
--	return platform.isMacintosh ? event.browserEvent.metaKey : event.browserEvent.ctrlKey;
-+	return browser.isMacintosh ? event.browserEvent.metaKey : event.browserEvent.ctrlKey;
-@@ -556 +556 @@ export class MouseController<T> implements IDisposable {
--		return platform.isMacintosh ? event.browserEvent.metaKey : event.browserEvent.ctrlKey;
-+		return browser.isMacintosh ? event.browserEvent.metaKey : event.browserEvent.ctrlKey;
-diff --git a/src/vs/base/browser/ui/sash/sash.ts b/src/vs/base/browser/ui/sash/sash.ts
-index 8c7168b..6b34122 100644
---- a/src/vs/base/browser/ui/sash/sash.ts
-+++ b/src/vs/base/browser/ui/sash/sash.ts
-@@ -8,2 +8 @@ import { IDisposable, dispose, Disposable } from 'vs/base/common/lifecycle';
--import { isIPad } from 'vs/base/browser/browser';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isIPad, isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/base/browser/ui/scrollbar/scrollableElement.ts b/src/vs/base/browser/ui/scrollbar/scrollableElement.ts
-index 9b31c84..51de0ea 100644
---- a/src/vs/base/browser/ui/scrollbar/scrollableElement.ts
-+++ b/src/vs/base/browser/ui/scrollbar/scrollableElement.ts
-@@ -18 +18 @@ import { IDisposable, dispose } from 'vs/base/common/lifecycle';
--import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -269 +269 @@ export abstract class AbstractScrollableElement extends Widget {
--		if (platform.isMacintosh) {
-+		if (browser.isMacintosh) {
-@@ -338 +338 @@ export abstract class AbstractScrollableElement extends Widget {
--			const shiftConvert = !platform.isMacintosh && e.browserEvent && e.browserEvent.shiftKey;
-+			const shiftConvert = !browser.isMacintosh && e.browserEvent && e.browserEvent.shiftKey;
-@@ -571 +571 @@ function resolveOptions(opts: ScrollableElementCreationOptions): ScrollableEleme
--	if (platform.isMacintosh) {
-+	if (browser.isMacintosh) {
-diff --git a/src/vs/base/browser/ui/selectBox/selectBox.ts b/src/vs/base/browser/ui/selectBox/selectBox.ts
-index d74c30c..ac39ce3 100644
---- a/src/vs/base/browser/ui/selectBox/selectBox.ts
-+++ b/src/vs/base/browser/ui/selectBox/selectBox.ts
-@@ -16 +16 @@ import { SelectBoxList } from 'vs/base/browser/ui/selectBox/selectBoxCustom';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/base/browser/ui/selectBox/selectBoxCustom.ts b/src/vs/base/browser/ui/selectBox/selectBoxCustom.ts
-index 8908d68..35dae2d 100644
---- a/src/vs/base/browser/ui/selectBox/selectBoxCustom.ts
-+++ b/src/vs/base/browser/ui/selectBox/selectBoxCustom.ts
-@@ -20 +20 @@ import { ISelectBoxDelegate, ISelectOptionItem, ISelectBoxOptions, ISelectBoxSty
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/base/browser/ui/selectBox/selectBoxNative.ts b/src/vs/base/browser/ui/selectBox/selectBoxNative.ts
-index 98dee79..09c0467 100644
---- a/src/vs/base/browser/ui/selectBox/selectBoxNative.ts
-+++ b/src/vs/base/browser/ui/selectBox/selectBoxNative.ts
-@@ -12 +12 @@ import { ISelectBoxDelegate, ISelectOptionItem, ISelectBoxOptions, ISelectBoxSty
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/base/browser/ui/tree/abstractTree.ts b/src/vs/base/browser/ui/tree/abstractTree.ts
-index f68ae90..d6b9ea7 100644
---- a/src/vs/base/browser/ui/tree/abstractTree.ts
-+++ b/src/vs/base/browser/ui/tree/abstractTree.ts
-@@ -24 +24 @@ import { disposableTimeout } from 'vs/base/common/async';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/base/node/config.ts b/src/vs/base/node/config.ts
-index 5ef2193..a232b6c 100644
---- a/src/vs/base/node/config.ts
-+++ b/src/vs/base/node/config.ts
-@@ -79,0 +80,3 @@ export class ConfigWatcher<T> implements IConfigWatcher<T>, IDisposable {
-+			} else {
-+				this.cache = config; // update config
-+				this._onDidUpdateConfiguration.fire({ config });
-diff --git a/src/vs/base/parts/quickopen/browser/quickOpenWidget.ts b/src/vs/base/parts/quickopen/browser/quickOpenWidget.ts
-index 74148e4..041205b 100644
---- a/src/vs/base/parts/quickopen/browser/quickOpenWidget.ts
-+++ b/src/vs/base/parts/quickopen/browser/quickOpenWidget.ts
-@@ -8 +8 @@ import * as nls from 'vs/nls';
--import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -66 +66 @@ export class QuickOpenController extends DefaultController {
--		if (platform.isMacintosh) {
-+		if (browser.isMacintosh) {
-diff --git a/src/vs/base/parts/tree/browser/treeDefaults.ts b/src/vs/base/parts/tree/browser/treeDefaults.ts
-index f91ca2b..ef6fce9 100644
---- a/src/vs/base/parts/tree/browser/treeDefaults.ts
-+++ b/src/vs/base/parts/tree/browser/treeDefaults.ts
-@@ -8,0 +9 @@ import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -113 +114 @@ export class DefaultController implements _.IController {
--			if (platform.isMacintosh) {
-+			if (browser.isMacintosh) {
-@@ -155 +156 @@ export class DefaultController implements _.IController {
--		const isMac = platform.isMacintosh;
-+		const isMac = browser.isMacintosh;
-diff --git a/src/vs/code/electron-browser/issue/issueReporterMain.ts b/src/vs/code/electron-browser/issue/issueReporterMain.ts
-index f08c996..7db13fa 100644
---- a/src/vs/code/electron-browser/issue/issueReporterMain.ts
-+++ b/src/vs/code/electron-browser/issue/issueReporterMain.ts
-@@ -296 +296 @@ export class IssueReporter extends Disposable {
--			const piiPaths = [this.environmentService.appRoot, this.environmentService.extensionsPath];
-+			const piiPaths = [this.environmentService.appRoot, this.environmentService.extensionsPath, ...this.environmentService.extraExtensionPaths];
-@@ -425 +425 @@ export class IssueReporter extends Disposable {
--			const cmdOrCtrlKey = platform.isMacintosh ? e.metaKey : e.ctrlKey;
-+			const cmdOrCtrlKey = browser.isMacintosh ? e.metaKey : e.ctrlKey;
-@@ -459 +459 @@ export class IssueReporter extends Disposable {
--			if (platform.isMacintosh) {
-+			if (browser.isMacintosh) {
-diff --git a/src/vs/code/electron-browser/processExplorer/processExplorerMain.ts b/src/vs/code/electron-browser/processExplorer/processExplorerMain.ts
-index e0ff793..885de12 100644
---- a/src/vs/code/electron-browser/processExplorer/processExplorerMain.ts
-+++ b/src/vs/code/electron-browser/processExplorer/processExplorerMain.ts
-@@ -304 +304 @@ export function startup(data: ProcessExplorerData): void {
--		const cmdOrCtrlKey = platform.isMacintosh ? e.metaKey : e.ctrlKey;
-+		const cmdOrCtrlKey = browser.isMacintosh ? e.metaKey : e.ctrlKey;
-diff --git a/src/vs/code/electron-browser/sharedProcess/sharedProcessMain.ts b/src/vs/code/electron-browser/sharedProcess/sharedProcessMain.ts
-index 6fd8249..6ae6b11 100644
---- a/src/vs/code/electron-browser/sharedProcess/sharedProcessMain.ts
-+++ b/src/vs/code/electron-browser/sharedProcess/sharedProcessMain.ts
-@@ -50,0 +51,2 @@ import { ServiceIdentifier } from 'vs/platform/instantiation/common/instantiatio
-+import { BackupMainService } from 'vs/platform/backup/electron-main/backupMainService';
-+import { mkdirp } from 'vs/base/node/pfs';
-@@ -93,0 +96,10 @@ function main(server: Server, initData: ISharedProcessInitData, configuration: I
-+	Promise.all<boolean | undefined>([ // Copied from src/vs/code/electron-main/main.ts
-+		environmentService.extensionsPath,
-+		environmentService.nodeCachedDataDir,
-+		environmentService.logsPath,
-+		environmentService.globalStorageHome,
-+		environmentService.workspaceStorageHome,
-+		environmentService.backupHome,
-+		...environmentService.extraExtensionPaths,
-+		...environmentService.extraBuiltinExtensionPaths,
-+	].map((path): undefined | Promise<boolean> => path ? mkdirp(path) : undefined));
-@@ -119,0 +132,2 @@ function main(server: Server, initData: ISharedProcessInitData, configuration: I
-+	const backupMainService = instantiationService.createInstance(BackupMainService) as BackupMainService;
-+	backupMainService.initialize().catch(console.error);
-@@ -124 +138 @@ function main(server: Server, initData: ISharedProcessInitData, configuration: I
--		const { appRoot, extensionsPath, extensionDevelopmentLocationURI, isBuilt, installSourcePath } = environmentService;
-+		const { appRoot, extensionsPath, extraExtensionPaths, extensionDevelopmentLocationURI, isBuilt, installSourcePath } = environmentService;
-@@ -138 +152 @@ function main(server: Server, initData: ISharedProcessInitData, configuration: I
--				piiPaths: [appRoot, extensionsPath]
-+				piiPaths: [appRoot, extensionsPath, ...extraExtensionPaths]
-@@ -223,0 +238 @@ async function handshake(configuration: ISharedProcessConfiguration): Promise<vo
-+startup({ machineId: "1" });
-diff --git a/src/vs/code/node/cli.ts b/src/vs/code/node/cli.ts
-index 1f8b17a..2a875f9 100644
---- a/src/vs/code/node/cli.ts
-+++ b/src/vs/code/node/cli.ts
-@@ -43,0 +44,3 @@ export async function main(argv: string[]): Promise<any> {
-+	const cli = await new Promise<IMainCli>((c, e) => require(['vs/code/node/cliProcessMain'], c, e));
-+	await cli.main(args);
-+	return; // Always just do this for now.
-diff --git a/src/vs/editor/browser/config/configuration.ts b/src/vs/editor/browser/config/configuration.ts
-index f97a692..8059a67 100644
---- a/src/vs/editor/browser/config/configuration.ts
-+++ b/src/vs/editor/browser/config/configuration.ts
-@@ -10 +9,0 @@ import { Disposable } from 'vs/base/common/lifecycle';
--import * as platform from 'vs/base/common/platform';
-@@ -17 +15,0 @@ import { IDimension } from 'vs/editor/common/editorCommon';
--import { IStorageService, StorageScope } from 'vs/platform/storage/common/storage';
-@@ -18,0 +17 @@ import { IAccessibilityService } from 'vs/platform/accessibility/common/accessib
-+import { IStorageService, StorageScope } from 'vs/platform/storage/common/storage';
-@@ -367 +366 @@ export class Configuration extends CommonEditorConfiguration {
--		if (platform.isMacintosh) {
-+		if (browser.isMacintosh) {
-diff --git a/src/vs/editor/browser/controller/mouseHandler.ts b/src/vs/editor/browser/controller/mouseHandler.ts
-index b3b4472..f888d63 100644
---- a/src/vs/editor/browser/controller/mouseHandler.ts
-+++ b/src/vs/editor/browser/controller/mouseHandler.ts
-@@ -222 +222 @@ export class MouseHandler extends ViewEventHandler {
--		if (platform.isMacintosh && e.leftButton && e.ctrlKey) {
-+		if (browser.isMacintosh && e.leftButton && e.ctrlKey) {
-diff --git a/src/vs/editor/browser/controller/textAreaHandler.ts b/src/vs/editor/browser/controller/textAreaHandler.ts
-index be5583d..c0e4f2e 100644
---- a/src/vs/editor/browser/controller/textAreaHandler.ts
-+++ b/src/vs/editor/browser/controller/textAreaHandler.ts
-@@ -214 +214 @@ export class TextAreaHandler extends ViewPart {
--					if (platform.isMacintosh) {
-+					if (browser.isMacintosh) {
-diff --git a/src/vs/editor/browser/controller/textAreaInput.ts b/src/vs/editor/browser/controller/textAreaInput.ts
-index bc986fa..63c6d79 100644
---- a/src/vs/editor/browser/controller/textAreaInput.ts
-+++ b/src/vs/editor/browser/controller/textAreaInput.ts
-@@ -263 +263 @@ export class TextAreaInput extends Disposable {
--			const [newState, typeInput] = deduceInputFromTextAreaValue(/*couldBeEmojiInput*/platform.isMacintosh, /*couldBeTypingAtOffset0*/previousEventWasFocus && platform.isMacintosh);
-+			const [newState, typeInput] = deduceInputFromTextAreaValue(/*couldBeEmojiInput*/browser.isMacintosh, /*couldBeTypingAtOffset0*/previousEventWasFocus && browser.isMacintosh);
-diff --git a/src/vs/editor/common/config/commonEditorConfig.ts b/src/vs/editor/common/config/commonEditorConfig.ts
-index 7571c59..7f5689a 100644
---- a/src/vs/editor/common/config/commonEditorConfig.ts
-+++ b/src/vs/editor/common/config/commonEditorConfig.ts
-@@ -395 +395 @@ const editorConfiguration: IConfigurationNode = {
--			'included': platform.isMacintosh
-+			'included': platform.isNative && platform.isMacintosh
-diff --git a/src/vs/editor/common/config/editorOptions.ts b/src/vs/editor/common/config/editorOptions.ts
-index 85b823f..7da04c6 100644
---- a/src/vs/editor/common/config/editorOptions.ts
-+++ b/src/vs/editor/common/config/editorOptions.ts
-@@ -6 +6 @@
--import * as nls from 'vs/nls';
-+import * as browser from 'vs/base/browser/browser';
-@@ -13,0 +14 @@ import { USUAL_WORD_SEPARATORS } from 'vs/editor/common/model/wordHelper';
-+import * as nls from 'vs/nls';
-@@ -1803 +1804 @@ export class EditorOptionsValidator {
--				configuredMulticursorModifier = platform.isMacintosh ? 'metaKey' : 'ctrlKey';
-+				configuredMulticursorModifier = browser.isMacintosh ? 'metaKey' : 'ctrlKey';
-@@ -2578 +2579 @@ export const EDITOR_FONT_DEFAULTS = {
--		platform.isMacintosh ? DEFAULT_MAC_FONT_FAMILY : (platform.isLinux ? DEFAULT_LINUX_FONT_FAMILY : DEFAULT_WINDOWS_FONT_FAMILY)
-+		browser.isMacintosh ? DEFAULT_MAC_FONT_FAMILY : (platform.isLinux ? DEFAULT_LINUX_FONT_FAMILY : DEFAULT_WINDOWS_FONT_FAMILY)
-@@ -2582 +2583 @@ export const EDITOR_FONT_DEFAULTS = {
--		platform.isMacintosh ? 12 : 14
-+		browser.isMacintosh ? 12 : 14
-@@ -2688 +2689 @@ export const EDITOR_DEFAULTS: IValidatedEditorOptions = {
--		selectionClipboard: true,
-+		selectionClipboard: false,
-diff --git a/src/vs/editor/common/config/fontInfo.ts b/src/vs/editor/common/config/fontInfo.ts
-index c69ea3f..b8d87f7 100644
---- a/src/vs/editor/common/config/fontInfo.ts
-+++ b/src/vs/editor/common/config/fontInfo.ts
-@@ -6 +6 @@
--import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -14 +14 @@ import { EditorZoom } from 'vs/editor/common/config/editorZoom';
--const GOLDEN_LINE_HEIGHT_RATIO = platform.isMacintosh ? 1.5 : 1.35;
-+const GOLDEN_LINE_HEIGHT_RATIO = browser.isMacintosh ? 1.5 : 1.35;
-diff --git a/src/vs/editor/contrib/clipboard/clipboard.ts b/src/vs/editor/contrib/clipboard/clipboard.ts
-index 990be3a..18ae0d5 100644
---- a/src/vs/editor/contrib/clipboard/clipboard.ts
-+++ b/src/vs/editor/contrib/clipboard/clipboard.ts
-@@ -18,0 +19 @@ import { KeybindingWeight } from 'vs/platform/keybinding/common/keybindingsRegis
-+import { clipboard } from 'electron';
-@@ -29 +30,2 @@ const supportsCopyWithSyntaxHighlighting = (supportsCopy && !browser.isEdgeOrIE)
--const supportsPaste = (platform.isNative || (!browser.isChrome && document.queryCommandSupported('paste')));
-+// const supportsPaste = (platform.isNative || (!browser.isChrome && document.queryCommandSupported('paste')));
-+const supportsPaste = true;
-@@ -71 +73 @@ class ExecCommandCutAction extends ExecCommandAction {
--			kbOpts = null;
-+			// kbOpts = null;
-@@ -119 +121 @@ class ExecCommandCopyAction extends ExecCommandAction {
--			kbOpts = null;
-+			// kbOpts = null;
-@@ -174 +176 @@ class ExecCommandPasteAction extends ExecCommandAction {
--			kbOpts = null;
-+			// kbOpts = null;
-@@ -176,0 +179 @@ class ExecCommandPasteAction extends ExecCommandAction {
-+		const { workbench } = require('vs/../../../../packages/vscode/src/workbench') as typeof import ('vs/../../../../packages/vscode/src/workbench');
-@@ -181 +184 @@ class ExecCommandPasteAction extends ExecCommandAction {
--			precondition: EditorContextKeys.writable,
-+			precondition: (require('vs/platform/contextkey/common/contextkey') as typeof import('vs/platform/contextkey/common/contextkey')).ContextKeyExpr.and(EditorContextKeys.writable, workbench.clipboardContextKey),
-@@ -191 +194,2 @@ class ExecCommandPasteAction extends ExecCommandAction {
--				order: 3
-+				order: 3,
-+				when: workbench.clipboardContextKey,
-@@ -194,0 +199,26 @@ class ExecCommandPasteAction extends ExecCommandAction {
-+
-+	public async run(accessor, editor: ICodeEditor): Promise<void> {
-+		if (editor instanceof (require('vs/editor/browser/widget/codeEditorWidget') as typeof import('vs/editor/browser/widget/codeEditorWidget')).CodeEditorWidget) {
-+			try {
-+				editor.focus();
-+				const textInput = document.activeElement! as HTMLTextAreaElement;
-+				const dataTransfer = new DataTransfer();
-+				const value = await clipboard.readText();
-+				dataTransfer.setData("text/plain", value);
-+				const pasteEvent = new ClipboardEvent("paste", {
-+					clipboardData: dataTransfer,
-+				});
-+				textInput.dispatchEvent(pasteEvent);
-+			} catch (ex) {
-+				try {
-+					editor.trigger('', (require('vs/editor/common/editorCommon') as typeof import ('vs/editor/common/editorCommon')).Handler.Paste, {
-+						text: await (require('vs/../../../../packages/vscode/src/workbench') as typeof import ('vs/../../../../packages/vscode/src/workbench')).workbench.clipboardText,
-+					});
-+				} catch (ex) {
-+					super.run(accessor, editor);
-+				}
-+			}
-+		} else {
-+			super.run(accessor, editor);
-+		}
+diff --git a/src/vs/base/common/network.ts b/src/vs/base/common/network.ts
+index 6d41e85e42..64f39687a4 100644
+--- a/src/vs/base/common/network.ts
++++ b/src/vs/base/common/network.ts
+@@ -96,12 +96,12 @@ class RemoteAuthoritiesImpl {
+ 		if (host && host.indexOf(':') !== -1) {
+ 			host = `[${host}]`;
+ 		}
+-		const port = this._ports[authority];
++		// NOTE@coder: Changed this to work against the current path.
+ 		const connectionToken = this._connectionTokens[authority];
+ 		return URI.from({
+ 			scheme: platform.isWeb ? this._preferredWebSchema : Schemas.vscodeRemoteResource,
+-			authority: `${host}:${port}`,
+-			path: `/vscode-remote-resource`,
++			authority: window.location.host,
++			path: `${window.location.pathname.replace(/\/+$/, '')}/vscode-remote-resource`,
+ 			query: `path=${encodeURIComponent(uri.path)}&tkn=${encodeURIComponent(connectionToken)}`
+ 		});
+ 	}
+diff --git a/src/vs/base/common/platform.ts b/src/vs/base/common/platform.ts
+index a657f4a4d9..66bd13dffa 100644
+--- a/src/vs/base/common/platform.ts
++++ b/src/vs/base/common/platform.ts
+@@ -56,6 +56,16 @@ if (typeof navigator === 'object' && !isElectronRenderer) {
+ 	_isWeb = true;
+ 	_locale = navigator.language;
+ 	_language = _locale;
++	const el = typeof document !== 'undefined' && document.getElementById('vscode-remote-nls-configuration');
++	const rawNlsConfig = el && el.getAttribute('data-settings');
++	if (rawNlsConfig) {
++		try {
++			const nlsConfig: NLSConfig = JSON.parse(rawNlsConfig);
++			_locale = nlsConfig.locale;
++			_translationsConfigFile = nlsConfig._translationsConfigFile;
++			_language = nlsConfig.availableLanguages['*'] || LANGUAGE_DEFAULT;
++		} catch (error) { /* Oh well. */ }
 +	}
-diff --git a/src/vs/editor/contrib/dnd/dnd.ts b/src/vs/editor/contrib/dnd/dnd.ts
-index 44a5dd5..9083efb 100644
---- a/src/vs/editor/contrib/dnd/dnd.ts
-+++ b/src/vs/editor/contrib/dnd/dnd.ts
-@@ -9 +9 @@ import { IDisposable, dispose } from 'vs/base/common/lifecycle';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/editor/contrib/goToDefinition/clickLinkGesture.ts b/src/vs/editor/contrib/goToDefinition/clickLinkGesture.ts
-index 3b72a01..0d723f5 100644
---- a/src/vs/editor/contrib/goToDefinition/clickLinkGesture.ts
-+++ b/src/vs/editor/contrib/goToDefinition/clickLinkGesture.ts
-@@ -86 +86 @@ function createOptions(multiCursorModifier: 'altKey' | 'ctrlKey' | 'metaKey'): C
--		if (platform.isMacintosh) {
-+		if (browser.isMacintosh) {
-@@ -92 +92 @@ function createOptions(multiCursorModifier: 'altKey' | 'ctrlKey' | 'metaKey'): C
--	if (platform.isMacintosh) {
-+	if (browser.isMacintosh) {
-diff --git a/src/vs/editor/contrib/links/links.ts b/src/vs/editor/contrib/links/links.ts
-index b3c5f8d..db4a359 100644
---- a/src/vs/editor/contrib/links/links.ts
-+++ b/src/vs/editor/contrib/links/links.ts
-@@ -13 +13 @@ import { IDisposable, dispose } from 'vs/base/common/lifecycle';
--import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -29 +29 @@ const HOVER_MESSAGE_GENERAL_META = new MarkdownString().appendText(
--	platform.isMacintosh
-+	browser.isMacintosh
-@@ -35 +35 @@ const HOVER_MESSAGE_COMMAND_META = new MarkdownString().appendText(
--	platform.isMacintosh
-+	browser.isMacintosh
-@@ -41 +41 @@ const HOVER_MESSAGE_GENERAL_ALT = new MarkdownString().appendText(
--	platform.isMacintosh
-+	browser.isMacintosh
-@@ -47 +47 @@ const HOVER_MESSAGE_COMMAND_ALT = new MarkdownString().appendText(
--	platform.isMacintosh
-+	browser.isMacintosh
-diff --git a/src/vs/editor/standalone/browser/accessibilityHelp/accessibilityHelp.ts b/src/vs/editor/standalone/browser/accessibilityHelp/accessibilityHelp.ts
-index 4bde524..0b18c35 100644
---- a/src/vs/editor/standalone/browser/accessibilityHelp/accessibilityHelp.ts
-+++ b/src/vs/editor/standalone/browser/accessibilityHelp/accessibilityHelp.ts
-@@ -257 +257 @@ class AccessibilityHelpWidget extends Widget implements IOverlayWidget {
--			platform.isMacintosh
-+			browser.isMacintosh
-@@ -282 +282 @@ class AccessibilityHelpWidget extends Widget implements IOverlayWidget {
--			platform.isMacintosh
-+			browser.isMacintosh
-diff --git a/src/vs/loader.js b/src/vs/loader.js
-index 4eddcab..2badfc3 100644
---- a/src/vs/loader.js
-+++ b/src/vs/loader.js
-@@ -671,4 +671,4 @@ var AMDLoader;
--            this._fs = nodeRequire('fs');
--            this._vm = nodeRequire('vm');
--            this._path = nodeRequire('path');
--            this._crypto = nodeRequire('crypto');
-+            this._fs = require('fs');
-+            this._vm = require('vm');
-+            this._path = require('path');
-+            this._crypto = require('crypto');
-@@ -736,0 +737,12 @@ var AMDLoader;
-+            const context = require.context("../", true, /.*/);
-+            if (scriptSrc.indexOf("file:///") !== -1) {
-+                let vsSrc = scriptSrc.split("file:///")[1].split(".js")[0];
-+                if (this._env.isWindows) {
-+                    const vsSrcSplit = vsSrc.split(":/");
-+                    vsSrcSplit.shift();
-+                    vsSrc = vsSrcSplit.join(":/");
-+                }
-+                if (vsSrc && vsSrc.startsWith("vs/")) {
-+                  scriptSrc = `node|./${vsSrc}`;
-+                }
-+            }
-@@ -741 +753 @@ var AMDLoader;
--                    moduleExports_1 = nodeRequire(pieces[1]);
-+                    moduleExports_1 = context(pieces[1]);
-diff --git a/src/vs/platform/clipboard/electron-browser/clipboardService.ts b/src/vs/platform/clipboard/electron-browser/clipboardService.ts
-index 9952574..908a9ae 100644
---- a/src/vs/platform/clipboard/electron-browser/clipboardService.ts
-+++ b/src/vs/platform/clipboard/electron-browser/clipboardService.ts
-@@ -9 +9 @@ import { URI } from 'vs/base/common/uri';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
+ } else if (typeof process === 'object') {
+ 	_isWindows = (process.platform === 'win32');
+ 	_isMacintosh = (process.platform === 'darwin');
+diff --git a/src/vs/base/common/processes.ts b/src/vs/base/common/processes.ts
+index c52f7b3774..5635cfac8a 100644
+--- a/src/vs/base/common/processes.ts
++++ b/src/vs/base/common/processes.ts
+@@ -110,7 +110,9 @@ export function sanitizeProcessEnvironment(env: IProcessEnvironment, ...preserve
+ 		/^ELECTRON_.+$/,
+ 		/^GOOGLE_API_KEY$/,
+ 		/^VSCODE_.+$/,
+-		/^SNAP(|_.*)$/
++		/^SNAP(|_.*)$/,
++		/^NBIN_BYPASS$/,
++		/^LAUNCH_VSCODE$/
+ 	];
+ 	const envKeys = Object.keys(env);
+ 	envKeys
+diff --git a/src/vs/base/node/languagePacks.js b/src/vs/base/node/languagePacks.js
+index 3ae24454cb..fac8679290 100644
+--- a/src/vs/base/node/languagePacks.js
++++ b/src/vs/base/node/languagePacks.js
+@@ -146,7 +146,10 @@ function factory(nodeRequire, path, fs, perf) {
+ 	function getLanguagePackConfigurations(userDataPath) {
+ 		const configFile = path.join(userDataPath, 'languagepacks.json');
+ 		try {
+-			return nodeRequire(configFile);
++			// NOTE@coder: Swapped require with readFile since require is cached and
++			// we don't restart the server-side portion of code-server when the
++			// language changes.
++			return JSON.parse(fs.readFileSync(configFile, "utf8"));
+ 		} catch (err) {
+ 			// Do nothing. If we can't read the file we have no
+ 			// language pack config.
 diff --git a/src/vs/platform/environment/common/environment.ts b/src/vs/platform/environment/common/environment.ts
-index eb1873c..dbbacd0 100644
+index 990755c4f3..06449bb9cb 100644
 --- a/src/vs/platform/environment/common/environment.ts
 +++ b/src/vs/platform/environment/common/environment.ts
-@@ -120,0 +121,2 @@ export interface IEnvironmentService {
+@@ -36,6 +36,8 @@ export interface ParsedArgs {
+ 	logExtensionHostCommunication?: boolean;
+ 	'extensions-dir'?: string;
+ 	'builtin-extensions-dir'?: string;
++	'extra-extensions-dir'?: string[];
++	'extra-builtin-extensions-dir'?: string[];
+ 	extensionDevelopmentPath?: string[]; // // undefined or array of 1 or more local paths or URIs
+ 	extensionTestsPath?: string; // either a local path or a URI
+ 	'extension-development-confirm-save'?: boolean;
+@@ -169,4 +171,6 @@ export interface IEnvironmentService {
+ 	driverVerbose: boolean;
+ 
+ 	galleryMachineIdResource?: URI;
 +	extraExtensionPaths: string[];
 +	extraBuiltinExtensionPaths: string[];
+ }
+diff --git a/src/vs/platform/environment/node/argv.ts b/src/vs/platform/environment/node/argv.ts
+index 3e48fe4ddd..2212ff5471 100644
+--- a/src/vs/platform/environment/node/argv.ts
++++ b/src/vs/platform/environment/node/argv.ts
+@@ -58,6 +58,8 @@ export const OPTIONS: OptionDescriptions<Required<ParsedArgs>> = {
+ 
+ 	'extensions-dir': { type: 'string', deprecates: 'extensionHomePath', cat: 'e', args: 'dir', description: localize('extensionHomePath', "Set the root path for extensions.") },
+ 	'builtin-extensions-dir': { type: 'string' },
++	'extra-builtin-extensions-dir': { type: 'string[]', cat: 'o', description: 'Path to an extra builtin extension directory.' },
++	'extra-extensions-dir': { type: 'string[]', cat: 'o', description: 'Path to an extra user extension directory.' },
+ 	'list-extensions': { type: 'boolean', cat: 'e', description: localize('listExtensions', "List the installed extensions.") },
+ 	'show-versions': { type: 'boolean', cat: 'e', description: localize('showVersions', "Show versions of installed extensions, when using --list-extension.") },
+ 	'category': { type: 'string', cat: 'e', description: localize('category', "Filters installed extensions by provided category, when using --list-extension.") },
+@@ -185,7 +187,7 @@ export function parseArgs<T>(args: string[], options: OptionDescriptions<T>, err
+ 			delete parsedArgs[o.deprecates];
+ 		}
+ 
+-		if (val) {
++		if (typeof val !== 'undefined') {
+ 			if (o.type === 'string[]') {
+ 				if (val && !Array.isArray(val)) {
+ 					val = [val];
 diff --git a/src/vs/platform/environment/node/environmentService.ts b/src/vs/platform/environment/node/environmentService.ts
-index 43866f8..e69b513 100644
+index f7d207009d..5c37b52dab 100644
 --- a/src/vs/platform/environment/node/environmentService.ts
 +++ b/src/vs/platform/environment/node/environmentService.ts
-@@ -172,0 +173,8 @@ export class EnvironmentService implements IEnvironmentService {
-+	@memoize
-+	get extraExtensionPaths(): string[] {
-+		return this._args['extra-extension-dirs'] || [];
+@@ -260,6 +260,12 @@ export class EnvironmentService implements IEnvironmentService {
+ 
+ 	get driverHandle(): string | undefined { return this._args['driver']; }
+ 	get driverVerbose(): boolean { return !!this._args['driver-verbose']; }
++	@memoize get extraExtensionPaths(): string[] {
++		return (this._args['extra-extensions-dir'] || []).map((p) => <string>parsePathArg(p, process));
 +	}
-+	@memoize
-+	get extraBuiltinExtensionPaths(): string[] {
-+		return this._args['extra-builtin-extension-dirs'] || [];
++	@memoize get extraBuiltinExtensionPaths(): string[] {
++		return (this._args['extra-builtin-extensions-dir'] || []).map((p) => <string>parsePathArg(p, process));
 +	}
+ 
+ 	constructor(private _args: ParsedArgs, private _execPath: string) {
+ 		if (!process.env['VSCODE_LOGS']) {
 diff --git a/src/vs/platform/extensionManagement/node/extensionManagementService.ts b/src/vs/platform/extensionManagement/node/extensionManagementService.ts
-index c897029..f84d9b6 100644
+index f0eaa74a59..3abf9e1752 100644
 --- a/src/vs/platform/extensionManagement/node/extensionManagementService.ts
 +++ b/src/vs/platform/extensionManagement/node/extensionManagementService.ts
-@@ -733,5 +733,9 @@ export class ExtensionManagementService extends Disposable implements IExtension
+@@ -731,11 +731,15 @@ export class ExtensionManagementService extends Disposable implements IExtension
+ 
+ 	private scanSystemExtensions(): Promise<ILocalExtension[]> {
+ 		this.logService.trace('Started scanning system extensions');
 -		const systemExtensionsPromise = this.scanExtensions(this.systemExtensionsPath, ExtensionType.System)
 -			.then(result => {
--				this.logService.info('Scanned system extensions:', result.length);
+-				this.logService.trace('Scanned system extensions:', result.length);
 -				return result;
 -			});
 +		const systemExtensionsPromise = Promise.all([
@@ -430,13 +148,16 @@ index c897029..f84d9b6 100644
 +				.map((path) => this.scanExtensions(path, ExtensionType.System))
 +		]).then((results) => {
 +			const result = results.reduce((flat, current) => flat.concat(current), []);
-+			this.logService.info('Scanned system extensions:', result.length);
++			this.logService.trace('Scanned system extensions:', result.length);
 +			return result;
 +		});
-@@ -761 +765 @@ export class ExtensionManagementService extends Disposable implements IExtension
--		return Promise.all([this.getUninstalledExtensions(), this.scanExtensions(this.extensionsPath, ExtensionType.User)])
-+		return Promise.all([this.getUninstalledExtensions(), this.scanAllUserExtensions(this.extensionsPath, ExtensionType.User)])
-@@ -772,0 +777,7 @@ export class ExtensionManagementService extends Disposable implements IExtension
+ 		if (this.environmentService.isBuilt) {
+ 			return systemExtensionsPromise;
+ 		}
+@@ -757,9 +761,16 @@ export class ExtensionManagementService extends Disposable implements IExtension
+ 			.then(([systemExtensions, devSystemExtensions]) => [...systemExtensions, ...devSystemExtensions]);
+ 	}
+ 
 +	private scanAllUserExtensions(folderName: string, type: ExtensionType): Promise<ILocalExtension[]> {
 +		return Promise.all([
 +			this.scanExtensions(folderName, type),
@@ -444,832 +165,736 @@ index c897029..f84d9b6 100644
 +		]).then((results) => results.reduce((flat, current) => flat.concat(current), []));
 +	}
 +
-@@ -805 +816 @@ export class ExtensionManagementService extends Disposable implements IExtension
--			.then(uninstalled => this.scanExtensions(this.extensionsPath, ExtensionType.User) // All user extensions
-+			.then(uninstalled => this.scanAllUserExtensions(this.extensionsPath, ExtensionType.User) // All user extensions
-@@ -814 +825 @@ export class ExtensionManagementService extends Disposable implements IExtension
+ 	private scanUserExtensions(excludeOutdated: boolean): Promise<ILocalExtension[]> {
+ 		this.logService.trace('Started scanning user extensions');
+-		return Promise.all([this.getUninstalledExtensions(), this.scanExtensions(this.extensionsPath, ExtensionType.User)])
++		return Promise.all([this.getUninstalledExtensions(), this.scanAllUserExtensions(this.extensionsPath, ExtensionType.User)])
+ 			.then(([uninstalled, extensions]) => {
+ 				extensions = extensions.filter(e => !uninstalled[new ExtensionIdentifierWithVersion(e.identifier, e.manifest.version).key()]);
+ 				if (excludeOutdated) {
+@@ -774,6 +785,12 @@ export class ExtensionManagementService extends Disposable implements IExtension
+ 	private scanExtensions(root: string, type: ExtensionType): Promise<ILocalExtension[]> {
+ 		const limiter = new Limiter<any>(10);
+ 		return pfs.readdir(root)
++			.catch((error) => {
++				if (error.code !== 'ENOENT') {
++					throw error;
++				}
++				return [];
++			})
+ 			.then(extensionsFolders => Promise.all<ILocalExtension>(extensionsFolders.map(extensionFolder => limiter.queue(() => this.scanExtension(extensionFolder, root, type)))))
+ 			.then(extensions => extensions.filter(e => e && e.identifier));
+ 	}
+@@ -812,7 +829,7 @@ export class ExtensionManagementService extends Disposable implements IExtension
+ 
+ 	private async removeUninstalledExtensions(): Promise<void> {
+ 		const uninstalled = await this.getUninstalledExtensions();
+-		const extensions = await this.scanExtensions(this.extensionsPath, ExtensionType.User); // All user extensions
++		const extensions = await this.scanAllUserExtensions(this.extensionsPath, ExtensionType.User); // All user extensions
+ 		const installed: Set<string> = new Set<string>();
+ 		for (const e of extensions) {
+ 			if (!uninstalled[new ExtensionIdentifierWithVersion(e.identifier, e.manifest.version).key()]) {
+@@ -831,7 +848,7 @@ export class ExtensionManagementService extends Disposable implements IExtension
+ 	}
+ 
+ 	private removeOutdatedExtensions(): Promise<void> {
 -		return this.scanExtensions(this.extensionsPath, ExtensionType.User) // All user extensions
 +		return this.scanAllUserExtensions(this.extensionsPath, ExtensionType.User) // All user extensions
-diff --git a/src/vs/platform/storage/node/storageMainService.ts b/src/vs/platform/storage/node/storageMainService.ts
-index 9845da1..567c195 100644
---- a/src/vs/platform/storage/node/storageMainService.ts
-+++ b/src/vs/platform/storage/node/storageMainService.ts
-@@ -169 +169,6 @@ export class StorageMainService extends Disposable implements IStorageMainServic
--			return readdir(this.environmentService.extensionsPath).then(extensions => {
-+			return Promise.all([
-+				this.environmentService.extensionsPath,
-+				...this.environmentService.extraExtensionPaths,
-+			].map((p) => readdir(p)))
-+				.then((results) => results.reduce((flat, current) => flat.concat(current), []))
-+				.then(extensions => {
-diff --git a/src/vs/platform/telemetry/electron-browser/telemetryService.ts b/src/vs/platform/telemetry/electron-browser/telemetryService.ts
-index 31d0309..5b166af 100644
---- a/src/vs/platform/telemetry/electron-browser/telemetryService.ts
-+++ b/src/vs/platform/telemetry/electron-browser/telemetryService.ts
-@@ -42 +42 @@ export class TelemetryService extends Disposable implements ITelemetryService {
--				piiPaths: [environmentService.appRoot, environmentService.extensionsPath]
-+				piiPaths: [environmentService.appRoot, environmentService.extensionsPath, ...environmentService.extraExtensionPaths]
-diff --git a/src/vs/platform/windows/common/windows.ts b/src/vs/platform/windows/common/windows.ts
-index cbc55b3..9d27c01 100644
---- a/src/vs/platform/windows/common/windows.ts
-+++ b/src/vs/platform/windows/common/windows.ts
-@@ -9 +9 @@ import { ITelemetryData } from 'vs/platform/telemetry/common/telemetry';
--import { IProcessEnvironment, isMacintosh, isLinux } from 'vs/base/common/platform';
-+import { IProcessEnvironment, isMacintosh, isLinux, isWeb } from 'vs/base/common/platform';
-@@ -262,0 +263 @@ export function getTitleBarStyle(configurationService: IConfigurationService, en
-+	if (isWeb) { return 'custom'; }
+ 			.then(extensions => {
+ 				const toRemove: ILocalExtension[] = [];
+ 
+diff --git a/src/vs/platform/product/common/product.ts b/src/vs/platform/product/common/product.ts
+index 2de51e8d32..837770990e 100644
+--- a/src/vs/platform/product/common/product.ts
++++ b/src/vs/platform/product/common/product.ts
+@@ -22,10 +22,16 @@ if (isWeb) {
+ 	if (Object.keys(product).length === 0) {
+ 		assign(product, {
+ 			version: '1.39.0-dev',
++			codeServerVersion: 'dev',
+ 			nameLong: 'Visual Studio Code Web Dev',
+ 			nameShort: 'VSCode Web Dev'
+ 		});
+ 	}
++	const el = document.getElementById('vscode-remote-product-configuration');
++	const rawProductConfiguration = el && el.getAttribute('data-settings');
++	if (rawProductConfiguration) {
++		assign(product, JSON.parse(rawProductConfiguration));
++	}
+ }
+ 
+ // Node: AMD loader
+@@ -35,7 +41,7 @@ else if (typeof require !== 'undefined' && typeof require.__$__nodeRequire === '
+ 	const rootPath = path.dirname(getPathFromAmdModule(require, ''));
+ 
+ 	product = assign({}, require.__$__nodeRequire(path.join(rootPath, 'product.json')) as IProductConfiguration);
+-	const pkg = require.__$__nodeRequire(path.join(rootPath, 'package.json')) as { version: string; };
++	const pkg = require.__$__nodeRequire(path.join(rootPath, 'package.json')) as { version: string; codeServerVersion: string; };
+ 
+ 	// Running out of sources
+ 	if (env['VSCODE_DEV']) {
+@@ -47,7 +53,8 @@ else if (typeof require !== 'undefined' && typeof require.__$__nodeRequire === '
+ 	}
+ 
+ 	assign(product, {
+-		version: pkg.version
++		version: pkg.version,
++		codeServerVersion: pkg.codeServerVersion,
+ 	});
+ }
+ 
+diff --git a/src/vs/platform/product/common/productService.ts b/src/vs/platform/product/common/productService.ts
+index 5aa5c32d7e..e4e7fd4174 100644
+--- a/src/vs/platform/product/common/productService.ts
++++ b/src/vs/platform/product/common/productService.ts
+@@ -15,6 +15,7 @@ export interface IProductService extends Readonly<IProductConfiguration> {
+ 
+ export interface IProductConfiguration {
+ 	readonly version: string;
++	readonly codeServerVersion: string;
+ 	readonly date?: string;
+ 	readonly quality?: string;
+ 	readonly commit?: string;
+diff --git a/src/vs/platform/remote/browser/browserSocketFactory.ts b/src/vs/platform/remote/browser/browserSocketFactory.ts
+index d0f6e6b18a..1966fd297d 100644
+--- a/src/vs/platform/remote/browser/browserSocketFactory.ts
++++ b/src/vs/platform/remote/browser/browserSocketFactory.ts
+@@ -205,7 +205,8 @@ export class BrowserSocketFactory implements ISocketFactory {
+ 	}
+ 
+ 	connect(host: string, port: number, query: string, callback: IConnectCallback): void {
+-		const socket = this._webSocketFactory.create(`ws://${host}:${port}/?${query}&skipWebSocketFrames=false`);
++		// NOTE@coder: Modified to work against the current path.
++		const socket = this._webSocketFactory.create(`${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}${window.location.pathname}?${query}&skipWebSocketFrames=false`);
+ 		const errorListener = socket.onError((err) => callback(err, undefined));
+ 		socket.onOpen(() => {
+ 			errorListener.dispose();
+@@ -213,6 +214,3 @@ export class BrowserSocketFactory implements ISocketFactory {
+ 		});
+ 	}
+ }
+-
+-
+-
+diff --git a/src/vs/platform/update/electron-main/abstractUpdateService.ts b/src/vs/platform/update/electron-main/abstractUpdateService.ts
+index 8a1c95d37b..8225a85d47 100644
+--- a/src/vs/platform/update/electron-main/abstractUpdateService.ts
++++ b/src/vs/platform/update/electron-main/abstractUpdateService.ts
+@@ -6,7 +6,6 @@
+ import { Event, Emitter } from 'vs/base/common/event';
+ import { timeout } from 'vs/base/common/async';
+ import { IConfigurationService, getMigratedSettingValue } from 'vs/platform/configuration/common/configuration';
+-import { ILifecycleMainService } from 'vs/platform/lifecycle/electron-main/lifecycleMainService';
+ import product from 'vs/platform/product/common/product';
+ import { IUpdateService, State, StateType, AvailableForDownload, UpdateType } from 'vs/platform/update/common/update';
+ import { IEnvironmentService } from 'vs/platform/environment/common/environment';
+@@ -44,7 +43,7 @@ export abstract class AbstractUpdateService implements IUpdateService {
+ 	}
+ 
+ 	constructor(
+-		@ILifecycleMainService private readonly lifecycleMainService: ILifecycleMainService,
++		_: any, // NOTE@coder: This depends on Electron so we skip it.
+ 		@IConfigurationService protected configurationService: IConfigurationService,
+ 		@IEnvironmentService private readonly environmentService: IEnvironmentService,
+ 		@IRequestService protected requestService: IRequestService,
+@@ -152,15 +151,8 @@ export abstract class AbstractUpdateService implements IUpdateService {
+ 
+ 		this.logService.trace('update#quitAndInstall(): before lifecycle quit()');
+ 
+-		this.lifecycleMainService.quit(true /* from update */).then(vetod => {
+-			this.logService.trace(`update#quitAndInstall(): after lifecycle quit() with veto: ${vetod}`);
+-			if (vetod) {
+-				return;
+-			}
+-
+ 			this.logService.trace('update#quitAndInstall(): running raw#quitAndInstall()');
+ 			this.doQuitAndInstall();
+-		});
+ 
+ 		return Promise.resolve(undefined);
+ 	}
+diff --git a/src/vs/workbench/api/browser/extensionHost.contribution.ts b/src/vs/workbench/api/browser/extensionHost.contribution.ts
+index 2905c52411..303ddf211f 100644
+--- a/src/vs/workbench/api/browser/extensionHost.contribution.ts
++++ b/src/vs/workbench/api/browser/extensionHost.contribution.ts
+@@ -57,6 +57,7 @@ import './mainThreadComments';
+ import './mainThreadTask';
+ import './mainThreadLabelService';
+ import 'vs/workbench/api/common/apiCommands';
++import 'vs/server/src/browser/mainThreadNodeProxy';
+ 
+ export class ExtensionPoints implements IWorkbenchContribution {
+ 
+diff --git a/src/vs/workbench/api/common/extHost.api.impl.ts b/src/vs/workbench/api/common/extHost.api.impl.ts
+index 230d09a290..84753e6ac7 100644
+--- a/src/vs/workbench/api/common/extHost.api.impl.ts
++++ b/src/vs/workbench/api/common/extHost.api.impl.ts
+@@ -67,6 +67,7 @@ import { ILogService } from 'vs/platform/log/common/log';
+ import { IURITransformerService } from 'vs/workbench/api/common/extHostUriTransformerService';
+ import { IExtHostRpcService } from 'vs/workbench/api/common/extHostRpcService';
+ import { IExtHostInitDataService } from 'vs/workbench/api/common/extHostInitDataService';
++import { IExtHostNodeProxy } from 'vs/server/src/browser/extHostNodeProxy';
+ 
+ export interface IExtensionApiFactory {
+ 	(extension: IExtensionDescription, registry: ExtensionDescriptionRegistry, configProvider: ExtHostConfigProvider): typeof vscode;
+@@ -86,6 +87,7 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+ 	const rpcProtocol = accessor.get(IExtHostRpcService);
+ 	const extHostStorage = accessor.get(IExtHostStorage);
+ 	const extHostLogService = accessor.get(ILogService);
++	const extHostNodeProxy = accessor.get(IExtHostNodeProxy);
+ 
+ 	// register addressable instances
+ 	rpcProtocol.set(ExtHostContext.ExtHostLogService, <ExtHostLogServiceShape><any>extHostLogService);
+@@ -93,6 +95,7 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+ 	rpcProtocol.set(ExtHostContext.ExtHostConfiguration, extHostConfiguration);
+ 	rpcProtocol.set(ExtHostContext.ExtHostExtensionService, extensionService);
+ 	rpcProtocol.set(ExtHostContext.ExtHostStorage, extHostStorage);
++	rpcProtocol.set(ExtHostContext.ExtHostNodeProxy, extHostNodeProxy);
+ 
+ 	// automatically create and register addressable instances
+ 	const extHostDecorations = rpcProtocol.set(ExtHostContext.ExtHostDecorations, accessor.get(IExtHostDecorations));
+diff --git a/src/vs/workbench/api/common/extHost.protocol.ts b/src/vs/workbench/api/common/extHost.protocol.ts
+index 7bd6aa6cb7..7c28136366 100644
+--- a/src/vs/workbench/api/common/extHost.protocol.ts
++++ b/src/vs/workbench/api/common/extHost.protocol.ts
+@@ -627,6 +627,10 @@ export interface MainThreadLabelServiceShape extends IDisposable {
+ 	$unregisterResourceLabelFormatter(handle: number): void;
+ }
+ 
++export interface MainThreadNodeProxyShape extends IDisposable {
++	$send(message: string): void;
++}
++
+ export interface MainThreadSearchShape extends IDisposable {
+ 	$registerFileSearchProvider(handle: number, scheme: string): void;
+ 	$registerTextSearchProvider(handle: number, scheme: string): void;
+@@ -860,6 +864,13 @@ export interface ExtHostLabelServiceShape {
+ 	$registerResourceLabelFormatter(formatter: ResourceLabelFormatter): IDisposable;
+ }
+ 
++export interface ExtHostNodeProxyShape {
++	$onMessage(message: string): void;
++	$onClose(): void;
++	$onDown(): void;
++	$onUp(): void;
++}
++
+ export interface ExtHostSearchShape {
+ 	$provideFileSearchResults(handle: number, session: number, query: search.IRawQuery, token: CancellationToken): Promise<search.ISearchCompleteStats>;
+ 	$provideTextSearchResults(handle: number, session: number, query: search.IRawTextQuery, token: CancellationToken): Promise<search.ISearchCompleteStats>;
+@@ -1384,7 +1395,8 @@ export const MainContext = {
+ 	MainThreadSearch: createMainId<MainThreadSearchShape>('MainThreadSearch'),
+ 	MainThreadTask: createMainId<MainThreadTaskShape>('MainThreadTask'),
+ 	MainThreadWindow: createMainId<MainThreadWindowShape>('MainThreadWindow'),
+-	MainThreadLabelService: createMainId<MainThreadLabelServiceShape>('MainThreadLabelService')
++	MainThreadLabelService: createMainId<MainThreadLabelServiceShape>('MainThreadLabelService'),
++	MainThreadNodeProxy: createMainId<MainThreadNodeProxyShape>('MainThreadNodeProxy')
+ };
+ 
+ export const ExtHostContext = {
+@@ -1418,5 +1430,6 @@ export const ExtHostContext = {
+ 	ExtHostStorage: createMainId<ExtHostStorageShape>('ExtHostStorage'),
+ 	ExtHostUrls: createExtId<ExtHostUrlsShape>('ExtHostUrls'),
+ 	ExtHostOutputService: createMainId<ExtHostOutputServiceShape>('ExtHostOutputService'),
+-	ExtHosLabelService: createMainId<ExtHostLabelServiceShape>('ExtHostLabelService')
++	ExtHosLabelService: createMainId<ExtHostLabelServiceShape>('ExtHostLabelService'),
++	ExtHostNodeProxy: createMainId<ExtHostNodeProxyShape>('ExtHostNodeProxy')
+ };
+diff --git a/src/vs/workbench/api/common/extHostExtensionService.ts b/src/vs/workbench/api/common/extHostExtensionService.ts
+index b5ce835e07..22be8516c1 100644
+--- a/src/vs/workbench/api/common/extHostExtensionService.ts
++++ b/src/vs/workbench/api/common/extHostExtensionService.ts
+@@ -5,7 +5,7 @@
+ 
+ import * as nls from 'vs/nls';
+ import * as path from 'vs/base/common/path';
+-import { originalFSPath, joinPath } from 'vs/base/common/resources';
++import { originalFSPath } from 'vs/base/common/resources';
+ import { Barrier } from 'vs/base/common/async';
+ import { dispose, toDisposable, DisposableStore } from 'vs/base/common/lifecycle';
+ import { TernarySearchTree } from 'vs/base/common/map';
+@@ -32,6 +32,7 @@ import { IExtHostInitDataService } from 'vs/workbench/api/common/extHostInitData
+ import { IExtensionStoragePaths } from 'vs/workbench/api/common/extHostStoragePaths';
+ import { IExtHostRpcService } from 'vs/workbench/api/common/extHostRpcService';
+ import { ServiceCollection } from 'vs/platform/instantiation/common/serviceCollection';
++import { IExtHostNodeProxy } from 'vs/server/src/browser/extHostNodeProxy';
+ 
+ interface ITestRunner {
+ 	/** Old test runner API, as exported from `vscode/lib/testrunner` */
+@@ -76,6 +77,7 @@ export abstract class AbstractExtHostExtensionService implements ExtHostExtensio
+ 	protected readonly _extHostWorkspace: ExtHostWorkspace;
+ 	protected readonly _extHostConfiguration: ExtHostConfiguration;
+ 	protected readonly _logService: ILogService;
++	protected readonly _nodeProxy: IExtHostNodeProxy;
+ 
+ 	protected readonly _mainThreadWorkspaceProxy: MainThreadWorkspaceShape;
+ 	protected readonly _mainThreadTelemetryProxy: MainThreadTelemetryShape;
+@@ -104,7 +106,8 @@ export abstract class AbstractExtHostExtensionService implements ExtHostExtensio
+ 		@IExtHostConfiguration extHostConfiguration: IExtHostConfiguration,
+ 		@ILogService logService: ILogService,
+ 		@IExtHostInitDataService initData: IExtHostInitDataService,
+-		@IExtensionStoragePaths storagePath: IExtensionStoragePaths
++		@IExtensionStoragePaths storagePath: IExtensionStoragePaths,
++		@IExtHostNodeProxy nodeProxy: IExtHostNodeProxy,
+ 	) {
+ 		this._hostUtils = hostUtils;
+ 		this._extHostContext = extHostContext;
+@@ -113,6 +116,7 @@ export abstract class AbstractExtHostExtensionService implements ExtHostExtensio
+ 		this._extHostWorkspace = extHostWorkspace;
+ 		this._extHostConfiguration = extHostConfiguration;
+ 		this._logService = logService;
++		this._nodeProxy = nodeProxy;
+ 		this._disposables = new DisposableStore();
+ 
+ 		this._mainThreadWorkspaceProxy = this._extHostContext.getProxy(MainContext.MainThreadWorkspace);
+@@ -331,14 +335,14 @@ export abstract class AbstractExtHostExtensionService implements ExtHostExtensio
+ 
+ 		const activationTimesBuilder = new ExtensionActivationTimesBuilder(reason.startup);
+ 		return Promise.all([
+-			this._loadCommonJSModule<IExtensionModule>(joinPath(extensionDescription.extensionLocation, extensionDescription.main), activationTimesBuilder),
++			this._loadCommonJSModule<IExtensionModule>(extensionDescription, activationTimesBuilder),
+ 			this._loadExtensionContext(extensionDescription)
+ 		]).then(values => {
+ 			return AbstractExtHostExtensionService._callActivate(this._logService, extensionDescription.identifier, values[0], values[1], activationTimesBuilder);
+ 		});
+ 	}
+ 
+-	protected abstract _loadCommonJSModule<T>(module: URI, activationTimesBuilder: ExtensionActivationTimesBuilder): Promise<T>;
++	protected abstract _loadCommonJSModule<T>(module: URI | IExtensionDescription, activationTimesBuilder: ExtensionActivationTimesBuilder): Promise<T>;
+ 
+ 	private _loadExtensionContext(extensionDescription: IExtensionDescription): Promise<vscode.ExtensionContext> {
+ 
+diff --git a/src/vs/workbench/api/node/extHost.services.ts b/src/vs/workbench/api/node/extHost.services.ts
+index a227d8a67b..92553a976c 100644
+--- a/src/vs/workbench/api/node/extHost.services.ts
++++ b/src/vs/workbench/api/node/extHost.services.ts
+@@ -26,6 +26,8 @@ import { ExtHostExtensionService } from 'vs/workbench/api/node/extHostExtensionS
+ import { IExtHostStorage, ExtHostStorage } from 'vs/workbench/api/common/extHostStorage';
+ import { ILogService } from 'vs/platform/log/common/log';
+ import { ExtHostLogService } from 'vs/workbench/api/node/extHostLogService';
++import { ServiceIdentifier } from 'vs/platform/instantiation/common/instantiation';
++import { IExtHostNodeProxy } from 'vs/server/src/browser/extHostNodeProxy';
+ 
+ // register singleton services
+ registerSingleton(ILogService, ExtHostLogService);
+@@ -42,3 +44,19 @@ registerSingleton(IExtHostSearch, ExtHostSearch);
+ registerSingleton(IExtensionStoragePaths, ExtensionStoragePaths);
+ registerSingleton(IExtHostExtensionService, ExtHostExtensionService);
+ registerSingleton(IExtHostStorage, ExtHostStorage);
++
++function NotImplementedProxy<T>(name: ServiceIdentifier<T>): { new(): T } {
++	return <any>class {
++		constructor() {
++			return new Proxy({}, {
++				get(target: any, prop: string | number) {
++					if (target[prop]) {
++						return target[prop];
++					}
++					throw new Error(`Not Implemented: ${name}->${String(prop)}`);
++				}
++			});
++		}
++	};
++}
++registerSingleton(IExtHostNodeProxy, class extends NotImplementedProxy(IExtHostNodeProxy) {});
 diff --git a/src/vs/workbench/api/node/extHostExtensionService.ts b/src/vs/workbench/api/node/extHostExtensionService.ts
-index 25e74c8..0bed89e 100644
+index 49a8e254fd..99d233aed5 100644
 --- a/src/vs/workbench/api/node/extHostExtensionService.ts
 +++ b/src/vs/workbench/api/node/extHostExtensionService.ts
-@@ -769 +769 @@ function loadCommonJSModule<T>(logService: ILogService, modulePath: string, acti
--		r = require.__$__nodeRequire<T>(modulePath);
-+		r = (global as any).nativeNodeRequire(modulePath);
-diff --git a/src/vs/workbench/api/node/extHostTypeConverters.ts b/src/vs/workbench/api/node/extHostTypeConverters.ts
-index 84406b8..cffd952 100644
---- a/src/vs/workbench/api/node/extHostTypeConverters.ts
-+++ b/src/vs/workbench/api/node/extHostTypeConverters.ts
-@@ -26 +25,0 @@ import { ExtHostDocumentsAndEditors } from 'vs/workbench/api/node/extHostDocumen
--import { isString, isNumber } from 'vs/base/common/types';
-@@ -31 +29,0 @@ import { LogLevel as _MainLogLevel } from 'vs/platform/log/common/log';
--import { coalesce } from 'vs/base/common/arrays';
-@@ -117,0 +116,2 @@ export namespace Diagnostic {
-+		const { isString, isNumber } = require('vs/base/common/types');
-+		const { coalesce } = require('vs/base/common/arrays');
+@@ -13,6 +13,8 @@ import { ExtHostDownloadService } from 'vs/workbench/api/node/extHostDownloadSer
+ import { CLIServer } from 'vs/workbench/api/node/extHostCLIServer';
+ import { URI } from 'vs/base/common/uri';
+ import { Schemas } from 'vs/base/common/network';
++import { IExtensionDescription } from 'vs/platform/extensions/common/extensions';
++import { joinPath } from 'vs/base/common/resources';
+ 
+ class NodeModuleRequireInterceptor extends RequireInterceptor {
+ 
+@@ -75,7 +77,10 @@ export class ExtHostExtensionService extends AbstractExtHostExtensionService {
+ 		};
+ 	}
+ 
+-	protected _loadCommonJSModule<T>(module: URI, activationTimesBuilder: ExtensionActivationTimesBuilder): Promise<T> {
++	protected _loadCommonJSModule<T>(module: URI | IExtensionDescription, activationTimesBuilder: ExtensionActivationTimesBuilder): Promise<T> {
++		if (!URI.isUri(module)) {
++			module = joinPath(module.extensionLocation, module.main!);
++		}
+ 		if (module.scheme !== Schemas.file) {
+ 			throw new Error(`Cannot load URI: '${module}', must be of file-scheme`);
+ 		}
+diff --git a/src/vs/workbench/api/worker/extHostExtensionService.ts b/src/vs/workbench/api/worker/extHostExtensionService.ts
+index afd82468c0..289145be54 100644
+--- a/src/vs/workbench/api/worker/extHostExtensionService.ts
++++ b/src/vs/workbench/api/worker/extHostExtensionService.ts
+@@ -9,6 +9,9 @@ import { AbstractExtHostExtensionService } from 'vs/workbench/api/common/extHost
+ import { endsWith } from 'vs/base/common/strings';
+ import { URI } from 'vs/base/common/uri';
+ import { RequireInterceptor } from 'vs/workbench/api/common/extHostRequireInterceptor';
++import { joinPath } from 'vs/base/common/resources';
++import { IExtensionDescription } from 'vs/platform/extensions/common/extensions';
++import { loadCommonJSModule } from 'vs/server/src/browser/worker';
+ 
+ class WorkerRequireInterceptor extends RequireInterceptor {
+ 
+@@ -41,7 +44,14 @@ export class ExtHostExtensionService extends AbstractExtHostExtensionService {
+ 		await this._fakeModules.install();
+ 	}
+ 
+-	protected async _loadCommonJSModule<T>(module: URI, activationTimesBuilder: ExtensionActivationTimesBuilder): Promise<T> {
++	protected async _loadCommonJSModule<T>(module: URI | IExtensionDescription, activationTimesBuilder: ExtensionActivationTimesBuilder): Promise<T> {
++		if (!URI.isUri(module) && module.extensionKind !== 'web') {
++			return loadCommonJSModule(module, activationTimesBuilder, this._nodeProxy, this._logService, this._fakeModules.getModule('vscode', module.extensionLocation));
++		}
++
++		if (!URI.isUri(module)) {
++			module = joinPath(module.extensionLocation, module.main!);
++		}
+ 
+ 		module = module.with({ path: ensureSuffix(module.path, '.js') });
+ 		const response = await fetch(module.toString(true));
+@@ -57,7 +67,7 @@ export class ExtHostExtensionService extends AbstractExtHostExtensionService {
+ 		const _exports = {};
+ 		const _module = { exports: _exports };
+ 		const _require = (request: string) => {
+-			const result = this._fakeModules.getModule(request, module);
++			const result = this._fakeModules.getModule(request, <URI>module);
+ 			if (result === undefined) {
+ 				throw new Error(`Cannot load module '${request}'`);
+ 			}
 diff --git a/src/vs/workbench/browser/dnd.ts b/src/vs/workbench/browser/dnd.ts
-index 7b6ad89..3190356 100644
+index 005a025aa9..ab392630c0 100644
 --- a/src/vs/workbench/browser/dnd.ts
 +++ b/src/vs/workbench/browser/dnd.ts
-@@ -170 +170 @@ export class ResourcesDropHandler {
+@@ -32,6 +32,7 @@ import { IWorkspaceEditingService } from 'vs/workbench/services/workspaces/commo
+ import { withNullAsUndefined } from 'vs/base/common/types';
+ import { IWorkbenchEnvironmentService } from 'vs/workbench/services/environment/common/environmentService';
+ import { IHostService } from 'vs/workbench/services/host/browser/host';
++import { IUploadService } from 'vs/server/src/browser/upload';
+ 
+ export interface IDraggedResource {
+ 	resource: URI;
+@@ -167,14 +168,15 @@ export class ResourcesDropHandler {
+ 		@IEditorService private readonly editorService: IEditorService,
+ 		@IConfigurationService private readonly configurationService: IConfigurationService,
+ 		@IWorkspaceEditingService private readonly workspaceEditingService: IWorkspaceEditingService,
+-		@IHostService private readonly hostService: IHostService
++		@IHostService private readonly hostService: IHostService,
++		@IUploadService private readonly uploadService: IUploadService,
+ 	) {
+ 	}
+ 
+ 	async handleDrop(event: DragEvent, resolveTargetGroup: () => IEditorGroup | undefined, afterDrop: (targetGroup: IEditorGroup | undefined) => void, targetIndex?: number): Promise<void> {
+ 		const untitledOrFileResources = extractResources(event).filter(r => this.fileService.canHandleResource(r.resource) || r.resource.scheme === Schemas.untitled);
+ 		if (!untitledOrFileResources.length) {
 -			return;
-+			return (require('vs/../../../../packages/vscode/src/workbench') as typeof import ('vs/../../../../packages/vscode/src/workbench')).workbench.handleDrop(event, resolveTargetGroup, afterDrop, targetIndex);
-diff --git a/src/vs/workbench/browser/layout.ts b/src/vs/workbench/browser/layout.ts
-index c25c940..f2004f8 100644
---- a/src/vs/workbench/browser/layout.ts
-+++ b/src/vs/workbench/browser/layout.ts
-@@ -12 +12 @@ import { Registry } from 'vs/platform/registry/common/platform';
--import { isWindows, isLinux, isMacintosh } from 'vs/base/common/platform';
-+import { isWindows, isLinux, isMacintosh, isNative } from 'vs/base/common/platform';
-@@ -210 +210 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
--		if ((isWindows || isLinux) && getTitleBarStyle(this.configurationService, this.environmentService) === 'custom') {
-+		// if ((isWeb || isWindows || isLinux) && getTitleBarStyle(this.configurationService, this.environmentService) === 'custom') {
-@@ -212 +212 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
--		}
-+		// }
-@@ -219 +219 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
--			if (this.state.fullscreen && (this.state.menuBar.visibility === 'toggle' || this.state.menuBar.visibility === 'default')) {
-+			if ((this.state.menuBar.visibility === 'toggle' || this.state.menuBar.visibility === 'default')) {
-@@ -531 +531,5 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
--				if (getTitleBarStyle(this.configurationService, this.environmentService) === 'native') {
-+				if (this.state.menuBar.visibility === 'hidden') {
-+					return false;
-+				} else if (this.state.menuBar.visibility === 'toggle') {
-+					return this.state.menuBar.toggled;
-+				} else if (getTitleBarStyle(this.configurationService, this.environmentService) === 'native') {
-@@ -535 +539 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
--				} else if (isMacintosh) {
-+				} else if (isNative && isMacintosh) {
-@@ -539,2 +542,0 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
--				} else if (this.state.menuBar.visibility === 'toggle' || this.state.menuBar.visibility === 'default') {
--					return this.state.menuBar.toggled;
-@@ -567 +569 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
--				if (isMacintosh || this.state.menuBar.visibility === 'hidden') {
-+				if ((isNative && isMacintosh) || this.state.menuBar.visibility === 'hidden') {
-diff --git a/src/vs/workbench/browser/legacyLayout.ts b/src/vs/workbench/browser/legacyLayout.ts
-index 53e73ac..0e24627 100644
---- a/src/vs/workbench/browser/legacyLayout.ts
-+++ b/src/vs/workbench/browser/legacyLayout.ts
-@@ -13 +13 @@ import { IThemeService } from 'vs/platform/theme/common/themeService';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh, isNative } from 'vs/base/common/platform';
-@@ -20 +20 @@ import { Part } from 'vs/workbench/browser/part';
--const TITLE_BAR_HEIGHT = isMacintosh ? 22 : 30;
-+const TITLE_BAR_HEIGHT = isNative && isMacintosh ? 22 : 30;
-@@ -413 +413 @@ export class WorkbenchLegacyLayout extends Disposable implements IVerticalSashLa
--		this.titlebarHeight = isTitlebarHidden ? 0 : this.partLayoutInfo.titlebar.height / (isMacintosh || !menubarVisibility || menubarVisibility === 'hidden' ? getZoomFactor() : 1); // adjust for zoom prevention
-+		this.titlebarHeight = isTitlebarHidden ? 0 : this.partLayoutInfo.titlebar.height / ((isNative && isMacintosh) || !menubarVisibility || menubarVisibility === 'hidden' ? getZoomFactor() : 1); // adjust for zoom prevention
-diff --git a/src/vs/workbench/browser/parts/editor/editor.contribution.ts b/src/vs/workbench/browser/parts/editor/editor.contribution.ts
-index df1ac8e..b86ab6a 100644
---- a/src/vs/workbench/browser/parts/editor/editor.contribution.ts
-+++ b/src/vs/workbench/browser/parts/editor/editor.contribution.ts
-@@ -48 +48 @@ import { ContextKeyExpr } from 'vs/platform/contextkey/common/contextkey';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/browser/parts/editor/editorDropTarget.ts b/src/vs/workbench/browser/parts/editor/editorDropTarget.ts
-index acf2522..feebe63 100644
---- a/src/vs/workbench/browser/parts/editor/editorDropTarget.ts
-+++ b/src/vs/workbench/browser/parts/editor/editorDropTarget.ts
-@@ -14 +14 @@ import { IEditorIdentifier, EditorInput, EditorOptions } from 'vs/workbench/comm
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/browser/parts/editor/editorGroupView.ts b/src/vs/workbench/browser/parts/editor/editorGroupView.ts
-index 50977a6..81e4fc0 100644
---- a/src/vs/workbench/browser/parts/editor/editorGroupView.ts
-+++ b/src/vs/workbench/browser/parts/editor/editorGroupView.ts
-@@ -1499 +1499 @@ registerThemingParticipant((theme, collector, environment) => {
--	const letterpress = `./media/letterpress${theme.type === 'dark' ? '-dark' : theme.type === 'hc' ? '-hc' : ''}.svg`;
-+	const letterpress = theme.type === 'dark' ? require.toUrl('./media/letterpress-dark.svg') : theme.type === 'hc' ? require.toUrl('./media/letterpress-hc.svg') : require.toUrl('./media/letterpress.svg');
-@@ -1502 +1502 @@ registerThemingParticipant((theme, collector, environment) => {
--			background-image: url('${require.toUrl(letterpress)}')
-+			background-image: url('${letterpress}')
-diff --git a/src/vs/workbench/browser/parts/editor/resourceViewer.ts b/src/vs/workbench/browser/parts/editor/resourceViewer.ts
-index 98a67c2..67d5248 100644
---- a/src/vs/workbench/browser/parts/editor/resourceViewer.ts
-+++ b/src/vs/workbench/browser/parts/editor/resourceViewer.ts
-@@ -23 +23 @@ import { memoize } from 'vs/base/common/decorators';
--import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -444 +444 @@ class InlineImageView {
--			if (platform.isMacintosh ? altPressed : ctrlPressed) {
-+			if (browser.isMacintosh ? altPressed : ctrlPressed) {
-@@ -458 +458 @@ class InlineImageView {
--			if (!(platform.isMacintosh ? altPressed : ctrlPressed)) {
-+			if (!(browser.isMacintosh ? altPressed : ctrlPressed)) {
-@@ -478 +478 @@ class InlineImageView {
--			if (!(platform.isMacintosh ? altPressed : ctrlPressed)) { // zoom in
-+			if (!(browser.isMacintosh ? altPressed : ctrlPressed)) { // zoom in
-@@ -502 +502 @@ class InlineImageView {
--			const isScrollWhellKeyPressed = platform.isMacintosh ? altPressed : ctrlPressed;
-+			const isScrollWhellKeyPressed = browser.isMacintosh ? altPressed : ctrlPressed;
-diff --git a/src/vs/workbench/browser/parts/editor/tabsTitleControl.ts b/src/vs/workbench/browser/parts/editor/tabsTitleControl.ts
-index 8b40624..43df4de 100644
---- a/src/vs/workbench/browser/parts/editor/tabsTitleControl.ts
-+++ b/src/vs/workbench/browser/parts/editor/tabsTitleControl.ts
-@@ -7 +7 @@ import 'vs/css!./media/tabstitlecontrol';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/browser/parts/quickinput/quickInputList.ts b/src/vs/workbench/browser/parts/quickinput/quickInputList.ts
-index 78c0846..f20462f 100644
---- a/src/vs/workbench/browser/parts/quickinput/quickInputList.ts
-+++ b/src/vs/workbench/browser/parts/quickinput/quickInputList.ts
-@@ -24 +24 @@ import { range } from 'vs/base/common/arrays';
--import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -265 +265 @@ export class QuickInputList {
--					if (platform.isMacintosh ? e.metaKey : e.ctrlKey) {
-+					if (browser.isMacintosh ? e.metaKey : e.ctrlKey) {
-diff --git a/src/vs/workbench/browser/parts/titlebar/media/titlebarpart.css b/src/vs/workbench/browser/parts/titlebar/media/titlebarpart.css
-index a215bde..df7562b 100644
---- a/src/vs/workbench/browser/parts/titlebar/media/titlebarpart.css
-+++ b/src/vs/workbench/browser/parts/titlebar/media/titlebarpart.css
-@@ -44,0 +45 @@
-+.web > .monaco-workbench .part.titlebar,
-diff --git a/src/vs/workbench/browser/parts/titlebar/menubarControl.ts b/src/vs/workbench/browser/parts/titlebar/menubarControl.ts
-index a822341..43b882a 100644
---- a/src/vs/workbench/browser/parts/titlebar/menubarControl.ts
-+++ b/src/vs/workbench/browser/parts/titlebar/menubarControl.ts
-@@ -16 +16,2 @@ import { IKeybindingService } from 'vs/platform/keybinding/common/keybinding';
--import { isMacintosh, isLinux } from 'vs/base/common/platform';
-+import { isNative } from 'vs/base/common/platform';
-+import { isMacintosh, isLinux } from 'vs/base/browser/browser';
-@@ -117 +118 @@ export class MenubarControl extends Disposable {
--		if (isMacintosh) {
-+		if (isNative && isMacintosh) {
-@@ -126 +127 @@ export class MenubarControl extends Disposable {
--		if (isMacintosh || this.currentTitlebarStyleSetting !== 'custom') {
-+		if ((isNative && isMacintosh) || this.currentTitlebarStyleSetting !== 'custom') {
-@@ -138 +139 @@ export class MenubarControl extends Disposable {
--			if (isMacintosh || this.currentTitlebarStyleSetting !== 'custom') {
-+			if ((isNative && isMacintosh) || this.currentTitlebarStyleSetting !== 'custom') {
-@@ -288 +289 @@ export class MenubarControl extends Disposable {
--		if (!isMacintosh && this.currentTitlebarStyleSetting === 'custom') {
-+		if (!(isNative && isMacintosh) && this.currentTitlebarStyleSetting === 'custom') {
-@@ -304 +305 @@ export class MenubarControl extends Disposable {
--		if (!isMacintosh && this.currentTitlebarStyleSetting === 'custom') {
-+		if (!(isNative && isMacintosh) && this.currentTitlebarStyleSetting === 'custom') {
-@@ -473 +474 @@ export class MenubarControl extends Disposable {
--				if (!isMacintosh) {
-+				if (!(isNative && isMacintosh)) {
-@@ -699 +700 @@ export class MenubarControl extends Disposable {
--			if (!isMacintosh && this.currentTitlebarStyleSetting === 'custom') {
-+			if (!(isNative && isMacintosh) && this.currentTitlebarStyleSetting === 'custom') {
-diff --git a/src/vs/workbench/browser/parts/titlebar/titlebarPart.ts b/src/vs/workbench/browser/parts/titlebar/titlebarPart.ts
-index 028f375..f740471 100644
---- a/src/vs/workbench/browser/parts/titlebar/titlebarPart.ts
-+++ b/src/vs/workbench/browser/parts/titlebar/titlebarPart.ts
-@@ -11 +11 @@ import { ITitleService, ITitleProperties } from 'vs/workbench/services/title/com
--import { getZoomFactor } from 'vs/base/browser/browser';
-+import { getZoomFactor, isMacintosh, isWindows, isLinux } from 'vs/base/browser/browser';
-@@ -25 +25 @@ import { TITLE_BAR_ACTIVE_BACKGROUND, TITLE_BAR_ACTIVE_FOREGROUND, TITLE_BAR_INA
--import { isMacintosh, isWindows, isLinux } from 'vs/base/common/platform';
-+import { isNative } from 'vs/base/common/platform';
-@@ -327 +327 @@ export class TitlebarPart extends Part implements ITitleService {
--		if (!isMacintosh) {
-+		if (!(isNative && isMacintosh)) {
-@@ -343 +343 @@ export class TitlebarPart extends Part implements ITitleService {
--		if (!isMacintosh) {
-+		// if (!(isNative && isMacintosh)) {
-@@ -346 +346 @@ export class TitlebarPart extends Part implements ITitleService {
--		}
-+		// }
-@@ -549 +549 @@ export class TitlebarPart extends Part implements ITitleService {
--		if (!isMacintosh &&
-+		if (!(isNative && isMacintosh) &&
-@@ -567 +567 @@ export class TitlebarPart extends Part implements ITitleService {
--			if (isMacintosh || this.configurationService.getValue<MenuBarVisibility>('window.menuBarVisibility') === 'hidden') {
-+			if ((isNative && isMacintosh) || this.configurationService.getValue<MenuBarVisibility>('window.menuBarVisibility') === 'hidden') {
-diff --git a/src/vs/workbench/browser/workbench.contribution.ts b/src/vs/workbench/browser/workbench.contribution.ts
-index 696f351..47af9f7 100644
---- a/src/vs/workbench/browser/workbench.contribution.ts
-+++ b/src/vs/workbench/browser/workbench.contribution.ts
-@@ -9 +9 @@ import { IConfigurationRegistry, Extensions as ConfigurationExtensions, Configur
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/browser/workbench.ts b/src/vs/workbench/browser/workbench.ts
-index c69d1ab..a34dd7e 100644
---- a/src/vs/workbench/browser/workbench.ts
-+++ b/src/vs/workbench/browser/workbench.ts
-@@ -13 +13 @@ import { runWhenIdle, IdleValue } from 'vs/base/common/async';
--import { getZoomLevel } from 'vs/base/browser/browser';
-+import { getZoomLevel, isWindows, isLinux } from 'vs/base/browser/browser';
-@@ -17 +17 @@ import { Registry } from 'vs/platform/registry/common/platform';
--import { isWindows, isLinux } from 'vs/base/common/platform';
-+import { isWeb } from 'vs/base/common/platform';
-@@ -83 +83 @@ export class Workbench extends Layout {
--		// Inform user about loading issues from the loader
-+		/*// Inform user about loading issues from the loader
-@@ -90 +90 @@ export class Workbench extends Layout {
--		});
-+		});*/
-@@ -272 +272 @@ export class Workbench extends Layout {
--		addClasses(document.body, platformClass); // used by our fonts
-+		addClasses(document.body, platformClass, isWeb ? 'web' : 'native'); // used by our fonts
-diff --git a/src/vs/workbench/common/contextkeys.ts b/src/vs/workbench/common/contextkeys.ts
-index e5b4a41..e623101 100644
---- a/src/vs/workbench/common/contextkeys.ts
-+++ b/src/vs/workbench/common/contextkeys.ts
-@@ -7 +7 @@ import { RawContextKey } from 'vs/platform/contextkey/common/contextkey';
--import { isMacintosh, isLinux, isWindows } from 'vs/base/common/platform';
-+import { isMacintosh, isLinux, isWindows } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/contrib/codeEditor/browser/accessibility/accessibility.ts b/src/vs/workbench/contrib/codeEditor/browser/accessibility/accessibility.ts
-index 787c9ef..bd50c14 100644
---- a/src/vs/workbench/contrib/codeEditor/browser/accessibility/accessibility.ts
-+++ b/src/vs/workbench/contrib/codeEditor/browser/accessibility/accessibility.ts
-@@ -15 +15 @@ import { Disposable } from 'vs/base/common/lifecycle';
--import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -197 +197 @@ class AccessibilityHelpWidget extends Widget implements IOverlayWidget {
--			platform.isMacintosh
-+			browser.isMacintosh
-@@ -239 +239 @@ class AccessibilityHelpWidget extends Widget implements IOverlayWidget {
--			platform.isMacintosh
-+			browser.isMacintosh
-diff --git a/src/vs/workbench/contrib/codeEditor/browser/suggestEnabledInput/suggestEnabledInput.ts b/src/vs/workbench/contrib/codeEditor/browser/suggestEnabledInput/suggestEnabledInput.ts
-index b949e00..8a9005c 100644
---- a/src/vs/workbench/contrib/codeEditor/browser/suggestEnabledInput/suggestEnabledInput.ts
-+++ b/src/vs/workbench/contrib/codeEditor/browser/suggestEnabledInput/suggestEnabledInput.ts
-@@ -14 +14 @@ import { mixin } from 'vs/base/common/objects';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/contrib/codeEditor/browser/toggleMultiCursorModifier.ts b/src/vs/workbench/contrib/codeEditor/browser/toggleMultiCursorModifier.ts
-index 5e1b6da..f8643d2 100644
---- a/src/vs/workbench/contrib/codeEditor/browser/toggleMultiCursorModifier.ts
-+++ b/src/vs/workbench/contrib/codeEditor/browser/toggleMultiCursorModifier.ts
-@@ -8 +8 @@ import { Action } from 'vs/base/common/actions';
--import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -84 +84 @@ MenuRegistry.appendMenuItem(MenuId.MenubarSelectionMenu, {
--			platform.isMacintosh
-+			browser.isMacintosh
-diff --git a/src/vs/workbench/contrib/debug/browser/debugEditorContribution.ts b/src/vs/workbench/contrib/debug/browser/debugEditorContribution.ts
-index de8fe1e..e8749fa 100644
---- a/src/vs/workbench/contrib/debug/browser/debugEditorContribution.ts
-+++ b/src/vs/workbench/contrib/debug/browser/debugEditorContribution.ts
-@@ -9,0 +10 @@ import * as env from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -181 +182 @@ export class DebugEditorContribution implements IDebugEditorContribution {
--			if (e.event.rightButton || (env.isMacintosh && e.event.leftButton && e.event.ctrlKey)) {
-+			if (e.event.rightButton || (browser.isMacintosh && e.event.leftButton && e.event.ctrlKey)) {
-@@ -200 +201 @@ export class DebugEditorContribution implements IDebugEditorContribution {
--					if (!env.isLinux && breakpoints.some(bp => !!bp.condition || !!bp.logMessage || !!bp.hitCondition)) {
-+					if (!(env.isNative && env.isLinux) && breakpoints.some(bp => !!bp.condition || !!bp.logMessage || !!bp.hitCondition)) {
-@@ -435 +436 @@ export class DebugEditorContribution implements IDebugEditorContribution {
--		const stopKey = env.isMacintosh ? 'metaKey' : 'ctrlKey';
-+		const stopKey = browser.isMacintosh ? 'metaKey' : 'ctrlKey';
-@@ -453 +454 @@ export class DebugEditorContribution implements IDebugEditorContribution {
--		const stopKey = env.isMacintosh ? KeyCode.Meta : KeyCode.Ctrl;
-+		const stopKey = browser.isMacintosh ? KeyCode.Meta : KeyCode.Ctrl;
-diff --git a/src/vs/workbench/contrib/debug/browser/linkDetector.ts b/src/vs/workbench/contrib/debug/browser/linkDetector.ts
-index 1b6f41c..0c9bf68 100644
---- a/src/vs/workbench/contrib/debug/browser/linkDetector.ts
-+++ b/src/vs/workbench/contrib/debug/browser/linkDetector.ts
-@@ -9 +9 @@ import { URI as uri } from 'vs/base/common/uri';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/contrib/debug/electron-browser/debug.contribution.ts b/src/vs/workbench/contrib/debug/electron-browser/debug.contribution.ts
-index 5ed1eda..60d3815 100644
---- a/src/vs/workbench/contrib/debug/electron-browser/debug.contribution.ts
-+++ b/src/vs/workbench/contrib/debug/electron-browser/debug.contribution.ts
-@@ -38 +38 @@ import { IViewsRegistry, Extensions as ViewExtensions } from 'vs/workbench/commo
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/contrib/extensions/node/extensionsWorkbenchService.ts b/src/vs/workbench/contrib/extensions/node/extensionsWorkbenchService.ts
-index 7c58491..63ac200 100644
---- a/src/vs/workbench/contrib/extensions/node/extensionsWorkbenchService.ts
-+++ b/src/vs/workbench/contrib/extensions/node/extensionsWorkbenchService.ts
-@@ -118 +118 @@ class Extension implements IExtension {
--		return `${product.extensionsGallery.itemUrl}?itemName=${this.publisher}.${this.name}`;
-+		return undefined; // `${product.extensionsGallery.itemUrl}?itemName=${this.publisher}.${this.name}`;
-diff --git a/src/vs/workbench/contrib/files/browser/fileActions.contribution.ts b/src/vs/workbench/contrib/files/browser/fileActions.contribution.ts
-index a9f017e..75fe519 100644
---- a/src/vs/workbench/contrib/files/browser/fileActions.contribution.ts
-+++ b/src/vs/workbench/contrib/files/browser/fileActions.contribution.ts
-@@ -17 +17 @@ import { KeybindingsRegistry, KeybindingWeight } from 'vs/platform/keybinding/co
--import { isWindows, isMacintosh } from 'vs/base/common/platform';
-+import { isWindows, isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/contrib/files/browser/fileCommands.ts b/src/vs/workbench/contrib/files/browser/fileCommands.ts
-index 59922c1..62d4d5b 100644
---- a/src/vs/workbench/contrib/files/browser/fileCommands.ts
-+++ b/src/vs/workbench/contrib/files/browser/fileCommands.ts
-@@ -28 +28 @@ import { KeyMod, KeyCode, KeyChord } from 'vs/base/common/keyCodes';
--import { isWindows, isMacintosh } from 'vs/base/common/platform';
-+import { isWindows, isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/contrib/files/browser/views/emptyView.ts b/src/vs/workbench/contrib/files/browser/views/emptyView.ts
-index 89e2def..9005795 100644
---- a/src/vs/workbench/contrib/files/browser/views/emptyView.ts
-+++ b/src/vs/workbench/contrib/files/browser/views/emptyView.ts
-@@ -7,0 +8 @@ import * as errors from 'vs/base/common/errors';
-+import * as browser from 'vs/base/browser/browser';
-@@ -76 +77 @@ export class EmptyView extends ViewletPanel {
--			const actionClass = this.contextService.getWorkbenchState() === WorkbenchState.WORKSPACE ? AddRootFolderAction : env.isMacintosh ? OpenFileFolderAction : OpenFolderAction;
-+			const actionClass = this.contextService.getWorkbenchState() === WorkbenchState.WORKSPACE ? AddRootFolderAction : browser.isMacintosh ? OpenFileFolderAction : OpenFolderAction;
++			return this.uploadService.handleDrop(event, resolveTargetGroup, afterDrop, targetIndex);
+ 		}
+ 
+ 		// Make the window active to handle the drop properly within
+diff --git a/src/vs/workbench/browser/web.main.ts b/src/vs/workbench/browser/web.main.ts
+index 84c46faa36..957e8412e1 100644
+--- a/src/vs/workbench/browser/web.main.ts
++++ b/src/vs/workbench/browser/web.main.ts
+@@ -48,6 +48,7 @@ import { toLocalISOString } from 'vs/base/common/date';
+ import { IndexedDBLogProvider } from 'vs/workbench/services/log/browser/indexedDBLogProvider';
+ import { InMemoryLogProvider } from 'vs/workbench/services/log/common/inMemoryLogProvider';
+ import { isWorkspaceToOpen, isFolderToOpen } from 'vs/platform/windows/common/windows';
++import { initialize } from 'vs/server/src/browser/client';
+ 
+ class BrowserMain extends Disposable {
+ 
+@@ -84,6 +85,7 @@ class BrowserMain extends Disposable {
+ 
+ 		// Startup
+ 		workbench.startup();
++		await initialize(services.serviceCollection);
+ 	}
+ 
+ 	private registerListeners(workbench: Workbench, storageService: BrowserStorageService): void {
+@@ -238,6 +240,7 @@ class BrowserMain extends Disposable {
+ 			const channel = connection.getChannel<IChannel>(REMOTE_FILE_SYSTEM_CHANNEL_NAME);
+ 			const remoteFileSystemProvider = this._register(new RemoteExtensionsFileSystemProvider(channel, remoteAgentService.getEnvironment()));
+ 			fileService.registerProvider(Schemas.vscodeRemote, remoteFileSystemProvider);
++			fileService.registerProvider(Schemas.file, remoteFileSystemProvider);
+ 
+ 			if (!this.configuration.userDataProvider) {
+ 				const remoteUserDataUri = this.getRemoteUserDataUri();
+diff --git a/src/vs/workbench/common/resources.ts b/src/vs/workbench/common/resources.ts
+index 53de865d8f..df234821a9 100644
+--- a/src/vs/workbench/common/resources.ts
++++ b/src/vs/workbench/common/resources.ts
+@@ -15,6 +15,7 @@ import { ParsedExpression, IExpression, parse } from 'vs/base/common/glob';
+ import { IWorkspaceContextService } from 'vs/platform/workspace/common/workspace';
+ import { IConfigurationService, IConfigurationChangeEvent } from 'vs/platform/configuration/common/configuration';
+ import { withNullAsUndefined } from 'vs/base/common/types';
++import { Schemas } from 'vs/base/common/network';
+ 
+ export class ResourceContextKey extends Disposable implements IContextKey<URI> {
+ 
+@@ -63,7 +64,7 @@ export class ResourceContextKey extends Disposable implements IContextKey<URI> {
+ 	set(value: URI | null) {
+ 		if (!ResourceContextKey._uriEquals(this._resourceKey.get(), value)) {
+ 			this._resourceKey.set(value);
+-			this._schemeKey.set(value ? value.scheme : null);
++			this._schemeKey.set(value ? (value.scheme === Schemas.vscodeRemote ? Schemas.file : value.scheme) : null);
+ 			this._filenameKey.set(value ? basename(value) : null);
+ 			this._langIdKey.set(value ? this._modeService.getModeIdByFilepathOrFirstLine(value) : null);
+ 			this._extensionKey.set(value ? extname(value) : null);
+@@ -200,4 +201,4 @@ export class ResourceGlobMatcher extends Disposable {
+ 
+ 		return !!expressionForRoot(resourcePathToMatch);
+ 	}
+-}
+\ No newline at end of file
++}
+diff --git a/src/vs/workbench/contrib/files/browser/files.contribution.ts b/src/vs/workbench/contrib/files/browser/files.contribution.ts
+index 1f4cd95f65..061931cbde 100644
+--- a/src/vs/workbench/contrib/files/browser/files.contribution.ts
++++ b/src/vs/workbench/contrib/files/browser/files.contribution.ts
+@@ -209,7 +209,7 @@ configurationRegistry.registerConfiguration({
+ 		'files.exclude': {
+ 			'type': 'object',
+ 			'markdownDescription': nls.localize('exclude', "Configure glob patterns for excluding files and folders. For example, the files explorer decides which files and folders to show or hide based on this setting. Read more about glob patterns [here](https://code.visualstudio.com/docs/editor/codebasics#_advanced-search-options)."),
+-			'default': { '**/.git': true, '**/.svn': true, '**/.hg': true, '**/CVS': true, '**/.DS_Store': true },
++			'default': { '**/.git': true, '**/.svn': true, '**/.hg': true, '**/CVS': true, '**/.DS_Store': true, '**/.code-server-partial-upload-*': true },
+ 			'scope': ConfigurationScope.RESOURCE,
+ 			'additionalProperties': {
+ 				'anyOf': [
 diff --git a/src/vs/workbench/contrib/files/browser/views/explorerViewer.ts b/src/vs/workbench/contrib/files/browser/views/explorerViewer.ts
-index b3c2d15..067215e 100644
+index cc4bcb28c5..98679a8b32 100644
 --- a/src/vs/workbench/contrib/files/browser/views/explorerViewer.ts
 +++ b/src/vs/workbench/contrib/files/browser/views/explorerViewer.ts
-@@ -38 +38 @@ import { DesktopDragAndDropData, ExternalElementsDragAndDropData, ElementsDragAn
--import { isMacintosh, isLinux } from 'vs/base/common/platform';
-+import { isMacintosh, isLinux } from 'vs/base/browser/browser';
-@@ -606,0 +607 @@ export class FileDragAndDrop implements ITreeDragAndDrop<ExplorerItem> {
-+		return (require('vs/../../../../packages/vscode/src/workbench') as typeof import('vs/../../../../packages/vscode/src/workbench')).workbench.handleExternalDrop(target, originalEvent);
-diff --git a/src/vs/workbench/contrib/files/common/explorerModel.ts b/src/vs/workbench/contrib/files/common/explorerModel.ts
-index a5cd043..0569a5f 100644
---- a/src/vs/workbench/contrib/files/common/explorerModel.ts
-+++ b/src/vs/workbench/contrib/files/common/explorerModel.ts
-@@ -77,0 +78 @@ export class ExplorerItem {
-+	private forgotChildren: boolean = false;
-@@ -248 +249,2 @@ export class ExplorerItem {
--		if (!this._isDirectoryResolved) {
-+		if (!this._isDirectoryResolved || this.forgotChildren) {
-+			this.forgotChildren = false;
-@@ -277,0 +280 @@ export class ExplorerItem {
-+		this.forgotChildren = true;
-diff --git a/src/vs/workbench/contrib/files/common/explorerService.ts b/src/vs/workbench/contrib/files/common/explorerService.ts
-index 46d87e4..fd3f927 100644
---- a/src/vs/workbench/contrib/files/common/explorerService.ts
-+++ b/src/vs/workbench/contrib/files/common/explorerService.ts
-@@ -333 +333 @@ export class ExplorerService implements IExplorerService {
--			if (shouldRefresh()) {
-+			if (true || shouldRefresh()) {
-diff --git a/src/vs/workbench/contrib/logs/common/logs.contribution.ts b/src/vs/workbench/contrib/logs/common/logs.contribution.ts
-index 25df212..6c40c9d 100644
---- a/src/vs/workbench/contrib/logs/common/logs.contribution.ts
-+++ b/src/vs/workbench/contrib/logs/common/logs.contribution.ts
-@@ -31 +31,2 @@ class LogOutputChannels extends Disposable implements IWorkbenchContribution {
--		outputChannelRegistry.registerChannel({ id: Constants.mainLogChannelId, label: nls.localize('mainLog', "Main"), file: URI.file(join(environmentService.logsPath, `main.log`)), log: true });
-+		// This channel only seems to be used when loading the app and we skip all of that, so it is never actually created or written to.
-+		// outputChannelRegistry.registerChannel({ id: Constants.mainLogChannelId, label: nls.localize('mainLog', "Main"), file: URI.file(join(environmentService.logsPath, `main.log`)), log: true });
-diff --git a/src/vs/workbench/contrib/output/common/outputLinkProvider.ts b/src/vs/workbench/contrib/output/common/outputLinkProvider.ts
-index efa955e..e72f41d 100644
---- a/src/vs/workbench/contrib/output/common/outputLinkProvider.ts
-+++ b/src/vs/workbench/contrib/output/common/outputLinkProvider.ts
-@@ -77,0 +78 @@ export class OutputLinkProvider {
-+		return Promise.resolve([]);
-diff --git a/src/vs/workbench/contrib/quickopen/browser/quickopen.contribution.ts b/src/vs/workbench/contrib/quickopen/browser/quickopen.contribution.ts
-index 92f9b7c..b8300c6 100644
---- a/src/vs/workbench/contrib/quickopen/browser/quickopen.contribution.ts
-+++ b/src/vs/workbench/contrib/quickopen/browser/quickopen.contribution.ts
-@@ -6 +6 @@
--import * as env from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -94 +94 @@ Registry.as<IQuickOpenRegistry>(QuickOpenExtensions.Quickopen).registerQuickOpen
--				description: env.isMacintosh ? nls.localize('gotoLineDescriptionMac', "Go to Line") : nls.localize('gotoLineDescriptionWin', "Go to Line")
-+				description: browser.isMacintosh ? nls.localize('gotoLineDescriptionMac', "Go to Line") : nls.localize('gotoLineDescriptionWin', "Go to Line")
-diff --git a/src/vs/workbench/contrib/relauncher/electron-browser/relauncher.contribution.ts b/src/vs/workbench/contrib/relauncher/electron-browser/relauncher.contribution.ts
-index e3c9552..a64fda2 100644
---- a/src/vs/workbench/contrib/relauncher/electron-browser/relauncher.contribution.ts
-+++ b/src/vs/workbench/contrib/relauncher/electron-browser/relauncher.contribution.ts
-@@ -18 +18,2 @@ import { isEqual } from 'vs/base/common/resources';
--import { isLinux, isMacintosh } from 'vs/base/common/platform';
-+import { isNative, isLinux } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-@@ -69 +70 @@ export class SettingsChangeRelauncher extends Disposable implements IWorkbenchCo
--		if (isMacintosh && config.window && typeof config.window.nativeTabs === 'boolean' && config.window.nativeTabs !== this.nativeTabs) {
-+		if (isNative && isMacintosh && config.window && typeof config.window.nativeTabs === 'boolean' && config.window.nativeTabs !== this.nativeTabs) {
-@@ -75 +76 @@ export class SettingsChangeRelauncher extends Disposable implements IWorkbenchCo
--		if (isMacintosh && config.window && typeof config.window.nativeFullScreen === 'boolean' && config.window.nativeFullScreen !== this.nativeFullScreen) {
-+		if (isNative && isMacintosh && config.window && typeof config.window.nativeFullScreen === 'boolean' && config.window.nativeFullScreen !== this.nativeFullScreen) {
-diff --git a/src/vs/workbench/contrib/scm/browser/scmViewlet.ts b/src/vs/workbench/contrib/scm/browser/scmViewlet.ts
-index b8db2f2..be84602 100644
---- a/src/vs/workbench/contrib/scm/browser/scmViewlet.ts
-+++ b/src/vs/workbench/contrib/scm/browser/scmViewlet.ts
-@@ -46 +46 @@ import { IWorkbenchLayoutService } from 'vs/workbench/services/layout/browser/la
--import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -769 +769 @@ export class RepositoryPanel extends ViewletPanel {
--			const label = binding ? binding.getLabel() : (platform.isMacintosh ? 'Cmd+Enter' : 'Ctrl+Enter');
-+			const label = binding ? binding.getLabel() : (browser.isMacintosh ? 'Cmd+Enter' : 'Ctrl+Enter');
-diff --git a/src/vs/workbench/contrib/search/browser/search.contribution.ts b/src/vs/workbench/contrib/search/browser/search.contribution.ts
-index 1f8088e..f5b0551 100644
---- a/src/vs/workbench/contrib/search/browser/search.contribution.ts
-+++ b/src/vs/workbench/contrib/search/browser/search.contribution.ts
-@@ -686 +686 @@ configurationRegistry.registerConfiguration({
--			included: platform.isMacintosh
-+			included: platform.isNative && platform.isMacintosh
-diff --git a/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts b/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts
-index 24ba122..3ab8804 100644
---- a/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts
-+++ b/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts
-@@ -12,0 +13 @@ import * as nls from 'vs/nls';
-+import * as browser from 'vs/base/browser/browser';
-@@ -185 +186 @@ configurationRegistry.registerConfiguration({
--			default: 'auto',
-+			default: browser.isSafari ? 'dom' : 'auto',
-@@ -196 +197 @@ configurationRegistry.registerConfiguration({
--			default: platform.isMacintosh ? 'selectWord' : platform.isWindows ? 'copyPaste' : 'default',
-+			default: browser.isMacintosh ? 'selectWord' : browser.isWindows ? 'copyPaste' : 'default',
-diff --git a/src/vs/workbench/contrib/terminal/browser/terminalLinkHandler.ts b/src/vs/workbench/contrib/terminal/browser/terminalLinkHandler.ts
-index 933e4ea..b661a7e 100644
---- a/src/vs/workbench/contrib/terminal/browser/terminalLinkHandler.ts
-+++ b/src/vs/workbench/contrib/terminal/browser/terminalLinkHandler.ts
-@@ -7,0 +8 @@ import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -234 +235 @@ export class TerminalLinkHandler {
--		return platform.isMacintosh ? event.metaKey : event.ctrlKey;
-+		return browser.isMacintosh ? event.metaKey : event.ctrlKey;
-@@ -242 +243 @@ export class TerminalLinkHandler {
--		if (platform.isMacintosh) {
-+		if (browser.isMacintosh) {
-diff --git a/src/vs/workbench/contrib/terminal/browser/terminalPanel.ts b/src/vs/workbench/contrib/terminal/browser/terminalPanel.ts
-index 780147c..2e8c9af 100644
---- a/src/vs/workbench/contrib/terminal/browser/terminalPanel.ts
-+++ b/src/vs/workbench/contrib/terminal/browser/terminalPanel.ts
-@@ -8,0 +9 @@ import * as platform from 'vs/base/common/platform';
-+import * as browser from 'vs/base/browser/browser';
-@@ -211 +212 @@ export class TerminalPanel extends Panel {
--			if (event.which === 2 && platform.isLinux) {
-+			if (event.which === 2 && browser.isLinux) {
-@@ -234 +235 @@ export class TerminalPanel extends Panel {
--					if (platform.isMacintosh) {
-+					if (browser.isMacintosh) {
-diff --git a/src/vs/workbench/contrib/webview/electron-browser/webview-pre.js b/src/vs/workbench/contrib/webview/electron-browser/webview-pre.js
-index 74fc798..0b6b5eb 100644
---- a/src/vs/workbench/contrib/webview/electron-browser/webview-pre.js
-+++ b/src/vs/workbench/contrib/webview/electron-browser/webview-pre.js
-@@ -10 +10,19 @@
--	const ipcRenderer = require('electron').ipcRenderer;
-+	const ipcRenderer = {
-+		on: (channel, callback) => {
-+			window.addEventListener("message", (event) => {
-+				if (event.data.channel === channel) {
-+					callback(event.data.channel, ...event.data.data);
-+				}
-+			});
-+		},
-+		sendToHost: (channel, ...args) => {
-+			window.parent.postMessage({
-+				channel,
-+				data: args,
-+				id: document.body.id,
-+			}, "*");
-+		},
-+	};
-+	const process = {
-+		pid: undefined,
-+	};
-@@ -22,7 +40,7 @@
--			require('electron').webFrame.registerURLSchemeAsPrivileged('vscode-resource', {
--				secure: true,
--				bypassCSP: false,
--				allowServiceWorkers: false,
--				supportFetchAPI: true,
--				corsEnabled: true
--			});
-+			// require('electron').webFrame.registerURLSchemeAsPrivileged('vscode-resource', {
-+			// 	secure: true,
-+			// 	bypassCSP: false,
-+			// 	allowServiceWorkers: false,
-+			// 	supportFetchAPI: true,
-+			// 	corsEnabled: true
-+			// });
-@@ -328 +346,3 @@
--					newFrame.contentWindow.focus();
-+					if (document.hasFocus()) {
-+						newFrame.contentWindow.focus();
-+					}
-diff --git a/src/vs/workbench/contrib/webview/electron-browser/webview.contribution.ts b/src/vs/workbench/contrib/webview/electron-browser/webview.contribution.ts
-index 484ff86..f3f57cb 100644
---- a/src/vs/workbench/contrib/webview/electron-browser/webview.contribution.ts
-+++ b/src/vs/workbench/contrib/webview/electron-browser/webview.contribution.ts
-@@ -23 +23 @@ import { InputFocusedContextKey } from 'vs/platform/contextkey/common/contextkey
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/contrib/webview/electron-browser/webviewElement.ts b/src/vs/workbench/contrib/webview/electron-browser/webviewElement.ts
-index 3e56ee1..3880c57 100644
---- a/src/vs/workbench/contrib/webview/electron-browser/webviewElement.ts
-+++ b/src/vs/workbench/contrib/webview/electron-browser/webviewElement.ts
-@@ -11 +11 @@ import { Disposable } from 'vs/base/common/lifecycle';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isMacintosh } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/contrib/welcome/walkThrough/common/walkThroughContentProvider.ts b/src/vs/workbench/contrib/welcome/walkThrough/common/walkThroughContentProvider.ts
-index 147f05b..6bc9061 100644
---- a/src/vs/workbench/contrib/welcome/walkThrough/common/walkThroughContentProvider.ts
-+++ b/src/vs/workbench/contrib/welcome/walkThrough/common/walkThroughContentProvider.ts
-@@ -30,0 +31 @@ export class WalkThroughContentProvider implements ITextModelContentProvider, IW
-+			/*
-@@ -38 +39,11 @@ export class WalkThroughContentProvider implements ITextModelContentProvider, IW
--		}) : this.textFileService.resolveTextContent(URI.file(resource.fsPath)).then(content => content.value));
-+			*/
-+			// This works because the only walkthrough that is a module is the welcome page.
-+			// We have to explicitly import it or Webpack won't pick it up.
-+			import("vs/workbench/contrib/welcome/page/browser/vs_code_welcome_page").then((content) => {
-+				resolve(content.default());
-+			}).catch((err) => {
-+				reject(err);
-+			});
-+		}) : (resource.scheme !== "file"
-+			? fetch(resource.path).then((res) => res.text())
-+			: this.textFileService.resolveTextContent(URI.file(resource.fsPath)).then(content => content.value)));
-@@ -64 +75 @@ export class WalkThroughSnippetContentProvider implements ITextModelContentProvi
--		return this.textFileService.resolveTextContent(URI.file(resource.fsPath)).then(content => {
-+		return fetch(resource.path).then((res) => res.text()).then((content) => {
-@@ -80,0 +92 @@ export class WalkThroughSnippetContentProvider implements ITextModelContentProvi
-+				/*
-@@ -85 +97,2 @@ export class WalkThroughSnippetContentProvider implements ITextModelContentProvi
--				marked(markdown, { renderer });
-+				*/
-+				marked(content, { renderer });
-@@ -91 +104 @@ export class WalkThroughSnippetContentProvider implements ITextModelContentProvi
--				this.modelService.updateModel(codeEditorModel, content.value);
-+				this.modelService.updateModel(codeEditorModel, content);
-diff --git a/src/vs/workbench/electron-browser/actions/helpActions.ts b/src/vs/workbench/electron-browser/actions/helpActions.ts
-index 79e2ba2..8c1b21b 100644
---- a/src/vs/workbench/electron-browser/actions/helpActions.ts
-+++ b/src/vs/workbench/electron-browser/actions/helpActions.ts
-@@ -9 +9,2 @@ import product from 'vs/platform/product/node/product';
--import { isMacintosh, isLinux, language } from 'vs/base/common/platform';
-+import { language } from 'vs/base/common/platform';
-+import { isMacintosh, isLinux } from 'vs/base/browser/browser';
-diff --git a/src/vs/workbench/electron-browser/actions/windowActions.ts b/src/vs/workbench/electron-browser/actions/windowActions.ts
-index 48ef482..dc47f81 100644
---- a/src/vs/workbench/electron-browser/actions/windowActions.ts
-+++ b/src/vs/workbench/electron-browser/actions/windowActions.ts
-@@ -388 +388 @@ export abstract class BaseOpenRecentAction extends Action {
--			placeHolder: isMacintosh ? nls.localize('openRecentPlaceHolderMac', "Select to open (hold Cmd-key to open in new window)") : nls.localize('openRecentPlaceHolder', "Select to open (hold Ctrl-key to open in new window)"),
-+			placeHolder: browser.isMacintosh ? nls.localize('openRecentPlaceHolderMac', "Select to open (hold Cmd-key to open in new window)") : nls.localize('openRecentPlaceHolder', "Select to open (hold Ctrl-key to open in new window)"),
-diff --git a/src/vs/workbench/electron-browser/main.contribution.ts b/src/vs/workbench/electron-browser/main.contribution.ts
-index 71bc992..a76dad4 100644
---- a/src/vs/workbench/electron-browser/main.contribution.ts
-+++ b/src/vs/workbench/electron-browser/main.contribution.ts
-@@ -13 +13,2 @@ import { KeyMod, KeyChord, KeyCode } from 'vs/base/common/keyCodes';
--import { isWindows, isLinux, isMacintosh } from 'vs/base/common/platform';
-+import { isNative, isWeb } from 'vs/base/common/platform';
-+import { isMacintosh, isWindows, isLinux } from 'vs/base/browser/browser';
-@@ -37 +38 @@ import { LogStorageAction } from 'vs/platform/storage/node/storageService';
--		if (isMacintosh) {
-+		if (isNative && isMacintosh) {
-@@ -225 +226 @@ import { LogStorageAction } from 'vs/platform/storage/node/storageService';
--	if (isMacintosh) {
-+	if (isNative && isMacintosh) {
-@@ -306 +307 @@ import { LogStorageAction } from 'vs/platform/storage/node/storageService';
--		when: IsMacContext.toNegated()
-+		// when: IsMacContext.toNegated()
-@@ -538 +539 @@ import { LogStorageAction } from 'vs/platform/storage/node/storageService';
--					isMacintosh ?
-+					isNative && isMacintosh ?
-@@ -545 +546 @@ import { LogStorageAction } from 'vs/platform/storage/node/storageService';
--					isMacintosh ?
-+					isNative && isMacintosh ?
-@@ -626 +627 @@ import { LogStorageAction } from 'vs/platform/storage/node/storageService';
--				'included': isWindows || isLinux
-+				'included': isWeb || isWindows || isLinux
-@@ -633 +634 @@ import { LogStorageAction } from 'vs/platform/storage/node/storageService';
--				'included': isWindows || isLinux
-+				'included': isWeb || isWindows || isLinux
-@@ -649,2 +650,2 @@ import { LogStorageAction } from 'vs/platform/storage/node/storageService';
--				'enum': ['native', 'custom'],
--				'default': isLinux ? 'native' : 'custom',
-+				'enum': ['custom'],
-+				'default': isNative && isLinux ? 'native' : 'custom',
-@@ -659 +660 @@ import { LogStorageAction } from 'vs/platform/storage/node/storageService';
--				'included': isMacintosh && parseFloat(os.release()) >= 16 // Minimum: macOS Sierra (10.12.x = darwin 16.x)
-+				'included': isNative && isMacintosh && parseFloat(os.release()) >= 16 // Minimum: macOS Sierra (10.12.x = darwin 16.x)
-@@ -665 +666 @@ import { LogStorageAction } from 'vs/platform/storage/node/storageService';
--				'included': isMacintosh
-+				'included': isNative && isMacintosh
-diff --git a/src/vs/workbench/electron-browser/main.ts b/src/vs/workbench/electron-browser/main.ts
-index b94daa8..5963023 100644
---- a/src/vs/workbench/electron-browser/main.ts
-+++ b/src/vs/workbench/electron-browser/main.ts
-@@ -140,0 +141,2 @@ class CodeRendererMain extends Disposable {
-+
-+				(require('vs/../../../../packages/vscode/src/workbench') as typeof import ('vs/../../../../packages/vscode/src/workbench')).workbench.serviceCollection = services.serviceCollection;
-diff --git a/src/vs/workbench/electron-browser/window.ts b/src/vs/workbench/electron-browser/window.ts
-index 111982b..73d83a4 100644
---- a/src/vs/workbench/electron-browser/window.ts
-+++ b/src/vs/workbench/electron-browser/window.ts
-@@ -53 +53 @@ const TextInputActions: IAction[] = [
--	new Action('editor.action.clipboardPasteAction', nls.localize('paste', "Paste"), undefined, true, () => Promise.resolve(document.execCommand('paste'))),
-+	(require('vs/../../../../packages/vscode/src/workbench') as typeof import ('vs/../../../../packages/vscode/src/workbench')).workbench.pasteAction,
-@@ -361 +361 @@ export class ElectronWindow extends Disposable {
--			!isMacintosh || // macOS only
-+			!browser.isMacintosh || // macOS only
-diff --git a/src/vs/workbench/services/contextmenu/electron-browser/contextmenuService.ts b/src/vs/workbench/services/contextmenu/electron-browser/contextmenuService.ts
-index 75f0026..2e94683 100644
---- a/src/vs/workbench/services/contextmenu/electron-browser/contextmenuService.ts
-+++ b/src/vs/workbench/services/contextmenu/electron-browser/contextmenuService.ts
-@@ -22 +22 @@ import { getTitleBarStyle } from 'vs/platform/windows/common/windows';
--import { isMacintosh } from 'vs/base/common/platform';
-+import { isNative, isMacintosh } from 'vs/base/common/platform';
-@@ -49 +49 @@ export class ContextMenuService extends Disposable implements IContextMenuServic
--		if (!isMacintosh && getTitleBarStyle(configurationService, environmentService) === 'custom') {
-+		if (!(isNative && isMacintosh) && getTitleBarStyle(configurationService, environmentService) === 'custom') {
-diff --git a/src/vs/workbench/services/extensions/electron-browser/cachedExtensionScanner.ts b/src/vs/workbench/services/extensions/electron-browser/cachedExtensionScanner.ts
-index 059f821..b19f292 100644
---- a/src/vs/workbench/services/extensions/electron-browser/cachedExtensionScanner.ts
-+++ b/src/vs/workbench/services/extensions/electron-browser/cachedExtensionScanner.ts
-@@ -32,0 +33 @@ function getSystemExtensionsRoot(): string {
-+	return (require('vs/../../../../packages/vscode/src/fill/paths') as typeof import ('vs/../../../../packages/vscode/src/fill/paths')).getBuiltInExtensionsDirectory();
-@@ -191,2 +192,3 @@ export class CachedExtensionScanner {
--			const folderStat = await pfs.stat(input.absoluteFolderPath);
--			input.mtime = folderStat.mtime.getTime();
-+			const folderStats = await Promise.all([pfs.stat(input.absoluteFolderPath), ...input.extraFolderPaths.map((p) => pfs.stat(p))]);
-+			input.mtime = folderStats[0].mtime.getTime();
-+			input.extraMtimes = folderStats.slice(1).map((s) => s.mtime.getTime());
-@@ -259 +261 @@ export class CachedExtensionScanner {
--			new ExtensionScannerInput(version, commit, locale, devMode, getSystemExtensionsRoot(), true, false, translations),
-+			new ExtensionScannerInput(version, commit, locale, devMode, getSystemExtensionsRoot(), true, false, translations, environmentService.extraBuiltinExtensionPaths),
-@@ -290 +292 @@ export class CachedExtensionScanner {
--					new ExtensionScannerInput(version, commit, locale, devMode, environmentService.extensionsPath, false, false, translations),
-+					new ExtensionScannerInput(version, commit, locale, devMode, environmentService.extensionsPath, false, false, translations, environmentService.extraExtensionPaths),
-diff --git a/src/vs/workbench/services/extensions/electron-browser/extensionHost.ts b/src/vs/workbench/services/extensions/electron-browser/extensionHost.ts
-index 9133b7e..8c801b7 100644
---- a/src/vs/workbench/services/extensions/electron-browser/extensionHost.ts
-+++ b/src/vs/workbench/services/extensions/electron-browser/extensionHost.ts
-@@ -461 +461 @@ export class ExtensionHostProcessWorker implements IExtensionHostStarter {
--		if (errorMessage === this._lastExtensionHostError) {
-+		if (errorMessage === this._lastExtensionHostError || errorMessage === "disconnected") {
-diff --git a/src/vs/workbench/services/extensions/electron-browser/extensionService.ts b/src/vs/workbench/services/extensions/electron-browser/extensionService.ts
-index b337206..0477464 100644
---- a/src/vs/workbench/services/extensions/electron-browser/extensionService.ts
-+++ b/src/vs/workbench/services/extensions/electron-browser/extensionService.ts
-@@ -96,0 +97 @@ export class ExtensionService extends Disposable implements IExtensionService {
-+	private readonly retry = (require('vs/../../../../packages/vscode/src/workbench') as typeof import ('vs/../../../../packages/vscode/src/workbench')).workbench.retry.register('Extension Host', () => this.startExtensionHost());
-@@ -442,0 +444 @@ export class ExtensionService extends Disposable implements IExtensionService {
-+		extHostProcessWorker.start()!.then(() => this.retry.recover());
-@@ -449,0 +452 @@ export class ExtensionService extends Disposable implements IExtensionService {
-+		return this.retry.run();
-diff --git a/src/vs/workbench/services/extensions/node/extensionHostProcess.ts b/src/vs/workbench/services/extensions/node/extensionHostProcess.ts
-index 838a9c7..2308cee 100644
---- a/src/vs/workbench/services/extensions/node/extensionHostProcess.ts
-+++ b/src/vs/workbench/services/extensions/node/extensionHostProcess.ts
-@@ -192 +192 @@ function connectToRenderer(protocol: IMessagePassingProtocol): Promise<IRenderer
--					process.kill(initData.parentPid, 0); // throws an exception if the main process doesn't exist anymore.
-+					// process.kill(initData.parentPid, 0); // throws an exception if the main process doesn't exist anymore.
-diff --git a/src/vs/workbench/services/extensions/node/extensionPoints.ts b/src/vs/workbench/services/extensions/node/extensionPoints.ts
-index 6e2179d..e6f38c9 100644
---- a/src/vs/workbench/services/extensions/node/extensionPoints.ts
-+++ b/src/vs/workbench/services/extensions/node/extensionPoints.ts
-@@ -445,0 +446 @@ export class ExtensionScannerInput {
-+	public extraMtimes: number[] = [];
-@@ -455 +456,2 @@ export class ExtensionScannerInput {
--		public readonly tanslations: Translations
-+		public readonly tanslations: Translations,
-+		public readonly extraFolderPaths: string[] = [],
-@@ -469,0 +472,16 @@ export class ExtensionScannerInput {
-+		// Allow extra folder paths in any order. Doesn't account for duplicates though.
-+		const eq = (a: string[] = [], b: string[] = [], atimes: number[] = [], btimes: number[] = []): boolean => {
-+			if (a.length !== b.length || atimes.length !== btimes.length) {
-+				return false;
-+			}
-+			for (let i = 0; i < a.length; ++i) {
-+				const index = b.indexOf(a[i]);
-+				if (index === -1) {
-+					return false;
-+				}
-+				if (atimes[i] !== btimes[index]) {
-+					return false;
-+				}
-+			}
-+			return true;
-+		};
-@@ -479,0 +498 @@ export class ExtensionScannerInput {
-+			&& eq(a.extraFolderPaths, b.extraFolderPaths, a.extraMtimes, b.extraMtimes)
-@@ -530 +549 @@ export class ExtensionScanner {
--	 * Scan a list of extensions defined in `absoluteFolderPath`
-+	 * Scan a list of extensions defined in `absoluteFolderPath` and `extraFolderPaths`
-@@ -532 +551 @@ export class ExtensionScanner {
--	public static async scanExtensions(input: ExtensionScannerInput, log: ILog, resolver: IExtensionResolver | null = null): Promise<IExtensionDescription[]> {
-+	public static async scanExtensions(input: ExtensionScannerInput, log: ILog, resolvers: IExtensionResolver | IExtensionResolver[] | null = null): Promise<IExtensionDescription[]> {
-@@ -533,0 +553 @@ export class ExtensionScanner {
-+		const extraFolderPaths = input.extraFolderPaths;
-@@ -537,2 +557,4 @@ export class ExtensionScanner {
--		if (!resolver) {
--			resolver = new DefaultExtensionResolver(absoluteFolderPath);
-+		if (!resolvers) {
-+			resolvers = [absoluteFolderPath, ...extraFolderPaths].map((p) => new DefaultExtensionResolver(p));
-+		} else if (!Array.isArray(resolvers)) {
-+			resolvers = [resolvers];
-@@ -552 +574,2 @@ export class ExtensionScanner {
--			let refs = await resolver.resolveExtensions();
-+			let refs = await Promise.all(resolvers.map((resolver) => resolver.resolveExtensions()))
-+				.then((results) => results.reduce((flat, current) => flat.concat(current), []));
-diff --git a/src/vs/workbench/services/files/node/watcher/nsfw/watcherService.ts b/src/vs/workbench/services/files/node/watcher/nsfw/watcherService.ts
-index 33d3697..af71b01 100644
---- a/src/vs/workbench/services/files/node/watcher/nsfw/watcherService.ts
-+++ b/src/vs/workbench/services/files/node/watcher/nsfw/watcherService.ts
-@@ -26,0 +27 @@ export class FileWatcher {
-+	private readonly retry = (require('vs/../../../../packages/vscode/src/workbench') as typeof import ('vs/../../../../packages/vscode/src/workbench')).workbench.retry.register('Watcher', () => this.startWatching());
-@@ -56,0 +58,2 @@ export class FileWatcher {
-+				this.toDispose = dispose(this.toDispose);
-+				return this.retry.run();
-@@ -113 +116 @@ export class FileWatcher {
--		}));
-+		})).then(() => this.retry.recover());
-diff --git a/src/vs/workbench/services/files/node/watcher/unix/watcherService.ts b/src/vs/workbench/services/files/node/watcher/unix/watcherService.ts
-index 8059d2c..b5a3d68 100644
---- a/src/vs/workbench/services/files/node/watcher/unix/watcherService.ts
-+++ b/src/vs/workbench/services/files/node/watcher/unix/watcherService.ts
-@@ -26,0 +27 @@ export class FileWatcher {
-+	private readonly retry = (require('vs/../../../../packages/vscode/src/workbench') as typeof import ('vs/../../../../packages/vscode/src/workbench')).workbench.retry.register('Watcher', () => this.startWatching());
-@@ -59,0 +61,2 @@ export class FileWatcher {
-+				this.toDispose = dispose(this.toDispose);
-+				return this.retry.run();
-@@ -116 +119 @@ export class FileWatcher {
--		}));
-+		})).then(() => this.retry.recover());
-diff --git a/src/vs/workbench/services/files/node/watcher/win32/csharpWatcherService.ts b/src/vs/workbench/services/files/node/watcher/win32/csharpWatcherService.ts
-index 74dad64..7bc591a 100644
---- a/src/vs/workbench/services/files/node/watcher/win32/csharpWatcherService.ts
-+++ b/src/vs/workbench/services/files/node/watcher/win32/csharpWatcherService.ts
-@@ -25,0 +26 @@ export class OutOfProcessWin32FolderWatcher {
-+	private readonly retry = (require('vs/../../../../packages/vscode/src/workbench') as typeof import ('vs/../../../../packages/vscode/src/workbench')).workbench.retry.register('Watcher', () => this.startWatcher());
-@@ -52,0 +54 @@ export class OutOfProcessWin32FolderWatcher {
-+		this.handle.stdout.once('data', () => this.retry.recover());
-@@ -110,0 +113 @@ export class OutOfProcessWin32FolderWatcher {
-+			return this.retry.run();
-diff --git a/src/vs/workbench/services/files2/node/diskFileSystemProvider.ts b/src/vs/workbench/services/files2/node/diskFileSystemProvider.ts
-index 18edf56..8e5b395 100644
---- a/src/vs/workbench/services/files2/node/diskFileSystemProvider.ts
-+++ b/src/vs/workbench/services/files2/node/diskFileSystemProvider.ts
-@@ -79,2 +79,2 @@ export class DiskFileSystemProvider extends Disposable implements IFileSystemPro
--			for (let i = 0; i < children.length; i++) {
--				const child = children[i];
-+			await Promise.all(children.map(async (child) => { // for (let i = 0; i < children.length; i++) {
-+				// const child = children[i];
-@@ -88 +88 @@ export class DiskFileSystemProvider extends Disposable implements IFileSystemPro
--			}
-+			})); // }
-diff --git a/src/vs/workbench/services/heap/node/heap.ts b/src/vs/workbench/services/heap/node/heap.ts
-index 8f627ba..9a795eb 100644
---- a/src/vs/workbench/services/heap/node/heap.ts
-+++ b/src/vs/workbench/services/heap/node/heap.ts
-@@ -33,0 +34 @@ export class HeapService implements IHeapService {
-+		if (typeof process === 'undefined' || typeof process.stdout === 'undefined') { return; } // Doesn't work in the browser (for running the extension host in worker).
-diff --git a/src/vs/workbench/services/keybinding/electron-browser/keybindingService.ts b/src/vs/workbench/services/keybinding/electron-browser/keybindingService.ts
-index 0c3d16f..e27e98c 100644
---- a/src/vs/workbench/services/keybinding/electron-browser/keybindingService.ts
-+++ b/src/vs/workbench/services/keybinding/electron-browser/keybindingService.ts
-@@ -16 +16 @@ import { KeybindingParser } from 'vs/base/common/keybindingParser';
--import { OS, OperatingSystem } from 'vs/base/common/platform';
-+import { OS, OperatingSystem, isNative } from 'vs/base/common/platform';
-@@ -131 +131 @@ export class KeyboardMapperFactory {
--		if (OS === OperatingSystem.Windows) {
-+		if (isNative && OS === OperatingSystem.Windows) {
-diff --git a/src/vs/workbench/services/search/node/searchService.ts b/src/vs/workbench/services/search/node/searchService.ts
-index fcef06a..80f6800 100644
---- a/src/vs/workbench/services/search/node/searchService.ts
-+++ b/src/vs/workbench/services/search/node/searchService.ts
-@@ -11 +11 @@ import { Event } from 'vs/base/common/event';
--import { Disposable, IDisposable, toDisposable } from 'vs/base/common/lifecycle';
-+import { Disposable, IDisposable, toDisposable, dispose } from 'vs/base/common/lifecycle';
-@@ -422,0 +423 @@ export class DiskSearch implements ISearchResultProvider {
-+	private toDispose: IDisposable[] = [];
-@@ -458,6 +459,15 @@ export class DiskSearch implements ISearchResultProvider {
--		const client = new Client(
--			getPathFromAmdModule(require, 'bootstrap-fork'),
--			opts);
--
--		const channel = getNextTickChannel(client.getChannel('search'));
--		this.raw = new SearchChannelClient(channel);
-+		const connect = (): Promise<void> => {
-+			const client = new Client(
-+				getPathFromAmdModule(require, 'bootstrap-fork'),
-+				opts);
-+			client.onDidProcessExit(() => {
-+				this.toDispose = dispose(this.toDispose);
-+				retry.run();
-+			}, null, this.toDispose);
-+			this.toDispose.push(client);
-+			const channel = getNextTickChannel(client.getChannel('search'));
-+			this.raw = new SearchChannelClient(channel);
-+			return this.raw.clearCache('test-connectivity');
-+		};
-+		const retry = (require('vs/../../../../packages/vscode/src/workbench') as typeof import ('vs/../../../../packages/vscode/src/workbench')).workbench.retry.register('Searcher', connect);
-+		retry.run();
-diff --git a/src/vs/workbench/services/timer/electron-browser/timerService.ts b/src/vs/workbench/services/timer/electron-browser/timerService.ts
-index 6e6fbcc..645bd72 100644
---- a/src/vs/workbench/services/timer/electron-browser/timerService.ts
-+++ b/src/vs/workbench/services/timer/electron-browser/timerService.ts
-@@ -426,0 +427 @@ export function didUseCachedData(): boolean {
-+	return false;
+@@ -47,6 +47,7 @@ import { IWorkspaceFolderCreationData } from 'vs/platform/workspaces/common/work
+ import { findValidPasteFileTarget } from 'vs/workbench/contrib/files/browser/fileActions';
+ import { FuzzyScore, createMatches } from 'vs/base/common/filters';
+ import { Emitter } from 'vs/base/common/event';
++import { IUploadService } from 'vs/server/src/browser/upload';
+ 
+ export class ExplorerDelegate implements IListVirtualDelegate<ExplorerItem> {
+ 
+@@ -444,7 +445,8 @@ export class FileDragAndDrop implements ITreeDragAndDrop<ExplorerItem> {
+ 		@IInstantiationService private instantiationService: IInstantiationService,
+ 		@ITextFileService private textFileService: ITextFileService,
+ 		@IHostService private hostService: IHostService,
+-		@IWorkspaceEditingService private workspaceEditingService: IWorkspaceEditingService
++		@IWorkspaceEditingService private workspaceEditingService: IWorkspaceEditingService,
++		@IUploadService private readonly uploadService: IUploadService,
+ 	) {
+ 		this.toDispose = [];
+ 
+@@ -605,6 +607,7 @@ export class FileDragAndDrop implements ITreeDragAndDrop<ExplorerItem> {
+ 	}
+ 
+ 	private async handleExternalDrop(data: DesktopDragAndDropData, target: ExplorerItem, originalEvent: DragEvent): Promise<void> {
++		return this.uploadService.handleExternalDrop(data, target, originalEvent);
+ 		const droppedResources = extractResources(originalEvent, true);
+ 		// Check for dropped external files to be folders
+ 		const result = await this.fileService.resolveAll(droppedResources);
+diff --git a/src/vs/workbench/contrib/webview/browser/pre/main.js b/src/vs/workbench/contrib/webview/browser/pre/main.js
+index e6b9fd854b..a3d0a46e3a 100644
+--- a/src/vs/workbench/contrib/webview/browser/pre/main.js
++++ b/src/vs/workbench/contrib/webview/browser/pre/main.js
+@@ -308,7 +308,8 @@
+ 			} else {
+ 				// Rewrite vscode-resource in csp
+ 				if (data.endpoint) {
+-					csp.setAttribute('content', csp.getAttribute('content').replace(/vscode-resource:/g, data.endpoint));
++					// NOTE@coder: Add back the trailing slash so it'll work for sub-paths.
++					csp.setAttribute('content', csp.getAttribute('content').replace(/vscode-resource:/g, data.endpoint + "/"));
+ 				}
+ 			}
+ 
+diff --git a/src/vs/workbench/services/environment/browser/environmentService.ts b/src/vs/workbench/services/environment/browser/environmentService.ts
+index 5f221e07ff..bfd592382c 100644
+--- a/src/vs/workbench/services/environment/browser/environmentService.ts
++++ b/src/vs/workbench/services/environment/browser/environmentService.ts
+@@ -15,7 +15,6 @@ import { IPath, IPathsToWaitFor, IWindowConfiguration } from 'vs/platform/window
+ import { ISingleFolderWorkspaceIdentifier, IWorkspaceIdentifier } from 'vs/platform/workspaces/common/workspaces';
+ import { IWorkbenchEnvironmentService } from 'vs/workbench/services/environment/common/environmentService';
+ import { IWorkbenchConstructionOptions } from 'vs/workbench/workbench.web.api';
+-import product from 'vs/platform/product/common/product';
+ 
+ export class BrowserWindowConfiguration implements IWindowConfiguration {
+ 
+@@ -180,12 +179,13 @@ export class BrowserWorkbenchEnvironmentService implements IWorkbenchEnvironment
+ 	driverHandle?: string;
+ 	driverVerbose: boolean;
+ 	galleryMachineIdResource?: URI;
++	extraExtensionPaths: string[];
++	extraBuiltinExtensionPaths: string[];
+ 	readonly logFile: URI;
+ 
+ 	get webviewExternalEndpoint(): string {
+-		// TODO: get fallback from product.json
+-		return (this.options.webviewEndpoint || 'https://{{uuid}}.vscode-webview-test.com/{{commit}}')
+-			.replace('{{commit}}', product.commit || '211fa02efe8c041fd7baa8ec3dce199d5185aa44');
++		// NOTE@coder: Modified to work against the current URL.
++		return `${window.location.origin}${window.location.pathname.replace(/\/+$/, '')}/webview/`;
+ 	}
+ 
+ 	get webviewResourceRoot(): string {
+diff --git a/src/vs/workbench/services/extensions/browser/extensionService.ts b/src/vs/workbench/services/extensions/browser/extensionService.ts
+index 000e5f7b4a..39f46e68a1 100644
+--- a/src/vs/workbench/services/extensions/browser/extensionService.ts
++++ b/src/vs/workbench/services/extensions/browser/extensionService.ts
+@@ -119,6 +119,7 @@ export class ExtensionService extends AbstractExtensionService implements IExten
+ 
+ 		} else {
+ 			// remote: only enabled and none-web'ish extension
++			localExtensions.push(...remoteEnv.extensions.filter(extension => this._isEnabled(extension) && isWebExtension(extension, this._configService)));
+ 			remoteEnv.extensions = remoteEnv.extensions.filter(extension => this._isEnabled(extension) && !isWebExtension(extension, this._configService));
+ 			this._checkEnableProposedApi(remoteEnv.extensions);
+ 
+diff --git a/src/vs/workbench/services/extensions/common/extensionsUtil.ts b/src/vs/workbench/services/extensions/common/extensionsUtil.ts
+index 49b2d270c0..45200ccdbb 100644
+--- a/src/vs/workbench/services/extensions/common/extensionsUtil.ts
++++ b/src/vs/workbench/services/extensions/common/extensionsUtil.ts
+@@ -12,7 +12,7 @@ import { IProductService } from 'vs/platform/product/common/productService';
+ 
+ export function isWebExtension(manifest: IExtensionManifest, configurationService: IConfigurationService): boolean {
+ 	const extensionKind = getExtensionKind(manifest, configurationService);
+-	return extensionKind === 'web';
++	return extensionKind === 'web' || manifest.name === 'vim';
+ }
+ 
+ export function isUIExtension(manifest: IExtensionManifest, productService: IProductService, configurationService: IConfigurationService): boolean {
+diff --git a/src/vs/workbench/services/extensions/node/extensionHostProcessSetup.ts b/src/vs/workbench/services/extensions/node/extensionHostProcessSetup.ts
+index 9f5a14f6cb..ca952f3d4d 100644
+--- a/src/vs/workbench/services/extensions/node/extensionHostProcessSetup.ts
++++ b/src/vs/workbench/services/extensions/node/extensionHostProcessSetup.ts
+@@ -42,12 +42,13 @@ const args = minimist(process.argv.slice(2), {
+ 	const Module = require.__$__nodeRequire('module') as any;
+ 	const originalLoad = Module._load;
+ 
+-	Module._load = function (request: string) {
++	Module._load = function (request: string, parent: object, isMain: boolean) {
+ 		if (request === 'natives') {
+ 			throw new Error('Either the extension or a NPM dependency is using the "natives" node module which is unsupported as it can cause a crash of the extension host. Click [here](https://go.microsoft.com/fwlink/?linkid=871887) to find out more');
+ 		}
+ 
+-		return originalLoad.apply(this, arguments);
++		// NOTE@coder: Map node_module.asar requests to regular node_modules.
++		return originalLoad.apply(this, [request.replace(/node_modules\.asar(\.unpacked)?/, 'node_modules'), parent, isMain]);
+ 	};
+ })();
+ 
+@@ -120,8 +121,11 @@ function _createExtHostProtocol(): Promise<IMessagePassingProtocol> {
+ 
+ 						// Wait for rich client to reconnect
+ 						protocol.onSocketClose(() => {
+-							// The socket has closed, let's give the renderer a certain amount of time to reconnect
+-							disconnectRunner1.schedule();
++							// NOTE@coder: Inform the server so we can manage offline
++							// connections there instead. Our goal is to persist connections
++							// forever (to a reasonable point) to account for things like
++							// hibernating overnight.
++							process.send!({ type: 'VSCODE_EXTHOST_DISCONNECTED' });
+ 						});
+ 					}
+ 				}
+diff --git a/src/vs/workbench/services/extensions/worker/extHost.services.ts b/src/vs/workbench/services/extensions/worker/extHost.services.ts
+index 3bdfa1a79f..ded21cf9c6 100644
+--- a/src/vs/workbench/services/extensions/worker/extHost.services.ts
++++ b/src/vs/workbench/services/extensions/worker/extHost.services.ts
+@@ -21,6 +21,7 @@ import { ExtHostExtensionService } from 'vs/workbench/api/worker/extHostExtensio
+ import { ServiceIdentifier } from 'vs/platform/instantiation/common/instantiation';
+ import { ILogService } from 'vs/platform/log/common/log';
+ import { ExtHostLogService } from 'vs/workbench/api/worker/extHostLogService';
++import { ExtHostNodeProxy, IExtHostNodeProxy } from 'vs/server/src/browser/extHostNodeProxy';
+ 
+ // register singleton services
+ registerSingleton(ILogService, ExtHostLogService);
+@@ -32,6 +33,7 @@ registerSingleton(IExtHostCommands, ExtHostCommands);
+ registerSingleton(IExtHostDocumentsAndEditors, ExtHostDocumentsAndEditors);
+ registerSingleton(IExtHostStorage, ExtHostStorage);
+ registerSingleton(IExtHostExtensionService, ExtHostExtensionService);
++registerSingleton(IExtHostNodeProxy, ExtHostNodeProxy);
+ 
+ // register services that only throw errors
+ function NotImplementedProxy<T>(name: ServiceIdentifier<T>): { new(): T } {
+diff --git a/src/vs/workbench/services/extensions/worker/extensionHostWorker.ts b/src/vs/workbench/services/extensions/worker/extensionHostWorker.ts
+index 3b5706ce76..f390ed35dc 100644
+--- a/src/vs/workbench/services/extensions/worker/extensionHostWorker.ts
++++ b/src/vs/workbench/services/extensions/worker/extensionHostWorker.ts
+@@ -36,7 +36,9 @@ const nativeAddEventLister = addEventListener.bind(self);
+ self.addEventLister = () => console.trace(`'addEventListener' has been blocked`);
+ 
+ self.indexedDB.open = () => console.trace(`'indexedDB.open' has been blocked`);
+-self.caches.open = () => console.trace(`'indexedDB.caches' has been blocked`);
++if (self.caches) { // NOTE@coder: on insecure domains this exists in Firefox but not Chromium or Safari.
++	self.caches.open = () => console.trace(`'indexedDB.caches' has been blocked`);
++}
+ 
+ //#endregion ---
+ 
+diff --git a/src/vs/workbench/services/localizations/electron-browser/localizationsService.ts b/src/vs/workbench/services/localizations/electron-browser/localizationsService.ts
+index 99394090da..4891e0fece 100644
+--- a/src/vs/workbench/services/localizations/electron-browser/localizationsService.ts
++++ b/src/vs/workbench/services/localizations/electron-browser/localizationsService.ts
+@@ -5,17 +5,17 @@
+ 
+ import { createChannelSender } from 'vs/base/parts/ipc/node/ipc';
+ import { ILocalizationsService } from 'vs/platform/localizations/common/localizations';
+-import { ISharedProcessService } from 'vs/platform/ipc/electron-browser/sharedProcessService';
+ import { registerSingleton } from 'vs/platform/instantiation/common/extensions';
++import { IRemoteAgentService } from 'vs/workbench/services/remote/common/remoteAgentService';
+ 
+ export class LocalizationsService {
+ 
+ 	_serviceBrand: undefined;
+ 
+ 	constructor(
+-		@ISharedProcessService sharedProcessService: ISharedProcessService,
++		@IRemoteAgentService remoteAgentService: IRemoteAgentService,
+ 	) {
+-		return createChannelSender<ILocalizationsService>(sharedProcessService.getChannel('localizations'));
++		return createChannelSender<ILocalizationsService>(remoteAgentService.getConnection()!.getChannel('localizations'));
+ 	}
+ }
+ 
+diff --git a/src/vs/workbench/services/update/electron-browser/updateService.ts b/src/vs/workbench/services/update/electron-browser/updateService.ts
+index b8f6558b2c..b1fe6b14fd 100644
+--- a/src/vs/workbench/services/update/electron-browser/updateService.ts
++++ b/src/vs/workbench/services/update/electron-browser/updateService.ts
+@@ -6,7 +6,7 @@
+ import { IChannel } from 'vs/base/parts/ipc/common/ipc';
+ import { Event, Emitter } from 'vs/base/common/event';
+ import { IUpdateService, State } from 'vs/platform/update/common/update';
+-import { IMainProcessService } from 'vs/platform/ipc/electron-browser/mainProcessService';
++import { IRemoteAgentService } from 'vs/workbench/services/remote/common/remoteAgentService';
+ import { registerSingleton } from 'vs/platform/instantiation/common/extensions';
+ 
+ export class NativeUpdateService implements IUpdateService {
+@@ -21,8 +21,9 @@ export class NativeUpdateService implements IUpdateService {
+ 
+ 	private channel: IChannel;
+ 
+-	constructor(@IMainProcessService mainProcessService: IMainProcessService) {
+-		this.channel = mainProcessService.getChannel('update');
++	// NOTE@coder: patched to work in the browser.
++	constructor(@IRemoteAgentService remoteAgentService: IRemoteAgentService) {
++		this.channel = remoteAgentService.getConnection()!.getChannel('update');
+ 
+ 		// always set this._state as the state changes
+ 		this.onStateChange(state => this._state = state);
+diff --git a/src/vs/workbench/workbench.web.main.ts b/src/vs/workbench/workbench.web.main.ts
+index fa9c9dd7a9..688d6c1934 100644
+--- a/src/vs/workbench/workbench.web.main.ts
++++ b/src/vs/workbench/workbench.web.main.ts
+@@ -34,11 +34,14 @@ import 'vs/workbench/services/textfile/browser/browserTextFileService';
+ import 'vs/workbench/services/keybinding/browser/keymapService';
+ import 'vs/workbench/services/extensions/browser/extensionService';
+ import 'vs/workbench/services/extensionManagement/common/extensionManagementServerService';
+-import 'vs/workbench/services/telemetry/browser/telemetryService';
++// NOTE@coder: We send it all to the server side to be processed there instead.
++// import 'vs/workbench/services/telemetry/browser/telemetryService';
+ import 'vs/workbench/services/configurationResolver/browser/configurationResolverService';
+ import 'vs/workbench/services/credentials/browser/credentialsService';
+ import 'vs/workbench/services/url/browser/urlService';
+-import 'vs/workbench/services/update/browser/updateService';
++// NOTE@coder: Use the electron-browser version since it already comes with a
++// channel which lets us actually perform updates.
++import 'vs/workbench/services/update/electron-browser/updateService';
+ import 'vs/workbench/contrib/stats/browser/workspaceStatsService';
+ import 'vs/workbench/services/workspaces/browser/workspacesService';
+ import 'vs/workbench/services/workspaces/browser/workspaceEditingService';

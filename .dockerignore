@@ -1,11 +1,13 @@
 Dockerfile
-# Docs
-doc/
-# GitHub stuff
+build
+deployment
+doc
 .github
 .gitignore
+.node-version
 .gitlab-ci.yml
 .travis.yml
 LICENSE
 README.md
 node_modules
+release
